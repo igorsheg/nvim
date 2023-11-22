@@ -1,56 +1,208 @@
--- This file is automatically loaded by plugins.core
+--                                     ██
+--                                    ░░
+--  ███████   █████   ██████  ██    ██ ██ ██████████
+-- ░░██░░░██ ██░░░██ ██░░░░██░██   ░██░██░░██░░██░░██
+--  ░██  ░██░███████░██   ░██░░██ ░██ ░██ ░██ ░██ ░██
+--  ░██  ░██░██░░░░ ░██   ░██ ░░████  ░██ ░██ ░██ ░██
+--  ███  ░██░░██████░░██████   ░░██   ░██ ███ ░██ ░██
+-- ░░░   ░░  ░░░░░░  ░░░░░░     ░░    ░░ ░░░  ░░  ░░
+--
+--  ▓▓▓▓▓▓▓▓▓▓
+-- ░▓ author ▓ xero <x@xero.style>
+-- ░▓ code   ▓ https://code.x-e.ro/dotfiles
+-- ░▓ mirror ▓ https://git.io/.files
+-- ░▓▓▓▓▓▓▓▓▓▓
+-- ░░░░░░░░░░
+--
+-- security
+vim.opt.modelines = 0
+
+-- set leader key to comma
 vim.g.mapleader = " "
-vim.g.maplocalleader = ","
 
-local opt = vim.opt
+-- hide buffers, not close them
+vim.opt.hidden = true
 
-opt.autowrite = true           -- Enable auto write
-opt.clipboard = "unnamedplus"  -- Sync with system clipboard
-opt.completeopt = "menu,menuone,noselect"
-opt.conceallevel = 3           -- Hide * markup for bold and italic
-opt.confirm = true             -- Confirm to save changes before exiting modified buffer
-opt.cursorline = true          -- Enable highlighting of the current line
-opt.expandtab = true           -- Use spaces instead of tabs
-opt.formatoptions = "jcroqlnt" -- tcqj
-opt.grepformat = "%f:%l:%c:%m"
-opt.grepprg = "rg --vimgrep"
-opt.ignorecase = true      -- Ignore case
-opt.inccommand = "nosplit" -- preview incremental substitute
-opt.laststatus = 0
-opt.list = true            -- Show some invisible characters (tabs...
-opt.mouse = "a"            -- Enable mouse mode
-opt.number = true          -- Print line number
-opt.pumblend = 10          -- Popup blend
-opt.pumheight = 10         -- Maximum number of entries in a popup
-opt.relativenumber = true  -- Relative line numbers
-opt.scrolloff = 4          -- Lines of context
-opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize" }
-opt.shiftround = true      -- Round indent
-opt.shiftwidth = 2         -- Size of an indent
-opt.shortmess:append({ W = true, I = true, c = true })
-opt.cmdheight = 0
-opt.showmode = false     -- Dont show mode since we have a statusline
-opt.sidescrolloff = 8    -- Columns of context
-opt.signcolumn = "yes"   -- Always show the signcolumn, otherwise it would shift the text each time
-opt.smartcase = true     -- Don't ignore case with capitals
-opt.smartindent = true   -- Insert indents automatically
-opt.spelllang = { "en" }
-opt.splitbelow = true    -- Put new windows below current
-opt.splitright = true    -- Put new windows right of current
-opt.tabstop = 2          -- Number of spaces tabs count for
-opt.termguicolors = true -- True color support
-opt.timeoutlen = 300
-opt.undofile = true
-opt.undolevels = 10000
-opt.updatetime = 200               -- Save swap file and trigger CursorHold
-opt.wildmode = "longest:full,full" -- Command-line completion mode
-opt.winminwidth = 5                -- Minimum window width
-opt.wrap = false                   -- Disable line wrap
+-- maintain undo history between sessions
+vim.opt.swapfile = false
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
 
-if vim.fn.has("nvim-0.9.0") == 1 then
-  opt.splitkeep = "screen"
-  opt.shortmess:append({ C = true })
+-- scroll bounds
+vim.o.scrolloff = 13
+
+-- ipad scrolling
+vim.opt.mouse = "a"
+
+-- fuzzy find
+vim.opt.path:append("**")
+-- lazy file name tab completion
+vim.opt.wildmode = "list:longest,list:full"
+vim.opt.wildmenu = true
+vim.opt.wildignorecase = true
+-- ignore files vim doesnt use
+vim.opt.wildignore:append(".git,.hg,.svn")
+vim.opt.wildignore:append(".aux,*.out,*.toc")
+vim.opt.wildignore:append(".o,*.obj,*.exe,*.dll,*.manifest,*.rbc,*.class")
+vim.opt.wildignore:append(".ai,*.bmp,*.gif,*.ico,*.jpg,*.jpeg,*.png,*.psd,*.webp")
+vim.opt.wildignore:append(".avi,*.divx,*.mp4,*.webm,*.mov,*.m2ts,*.mkv,*.vob,*.mpg,*.mpeg")
+vim.opt.wildignore:append(".mp3,*.oga,*.ogg,*.wav,*.flac")
+vim.opt.wildignore:append(".eot,*.otf,*.ttf,*.woff")
+vim.opt.wildignore:append(".doc,*.pdf,*.cbr,*.cbz")
+vim.opt.wildignore:append(".zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz,*.kgb")
+vim.opt.wildignore:append(".swp,.lock,.DS_Store,._*")
+vim.opt.wildignore:append(".,..")
+
+-- case insensitive search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.infercase = true
+
+-- make backspace behave in a sane manner
+vim.opt.backspace = "indent,eol,start"
+
+-- searching
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.inccommand = "split"
+
+-- use indents of 2
+vim.opt.shiftwidth = 2
+
+-- tabs are tabs
+vim.opt.expandtab = false
+
+-- an indentation every 2 columns
+vim.opt.tabstop = 2
+
+-- let backspace delete indent
+vim.opt.softtabstop = 2
+
+-- enable auto indentation
+vim.opt.autoindent = true
+
+
+--           ██
+--          ░░
+--  ██    ██ ██ ██████████  ██████  █████
+-- ░██   ░██░██░░██░░██░░██░░██░░█ ██░░░██
+-- ░░██ ░██ ░██ ░██ ░██ ░██ ░██ ░ ░██  ░░
+--  ░░████  ░██ ░██ ░██ ░██ ░██   ░██   ██
+--   ░░██   ░██ ███ ░██ ░██░███   ░░█████
+--    ░░    ░░ ░░░  ░░  ░░ ░░░     ░░░░░
+--
+--  ▓▓▓▓▓▓▓▓▓▓
+-- ░▓ author ▓ xero <x@xero.style>
+-- ░▓ code   ▓ https://code.x-e.ro/dotfiles
+-- ░▓ mirror ▓ https://git.io/.files
+-- ░▓▓▓▓▓▓▓▓▓▓
+-- ░░░░░░░░░░
+--
+-- show matching brackets/parenthesis
+vim.opt.showmatch = true
+
+-- disable startup message
+vim.opt.shortmess:append("sI")
+
+-- cmd display (set to zero to autohide)
+vim.opt.cmdheight = 1
+
+-- gutter sizing
+vim.opt.signcolumn = "auto:2"
+
+-- syntax highlighting
+vim.opt.termguicolors = true
+vim.opt.synmaxcol = 512
+
+-- show line numbers
+vim.opt.number = true
+
+-- default no line wrapping
+vim.opt.wrap = false
+
+-- set indents when wrapped
+vim.opt.breakindent = true
+
+-- highlight cursor
+vim.opt.cursorline = true
+-- set cursorcolumn = true
+
+-- show invisibles
+vim.opt.listchars = { tab = "  ", trail = "·", extends = "»", precedes = "«", nbsp = "░" }
+vim.opt.list = true
+
+-- split style
+vim.opt.fillchars = { vert = "▒" }
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
+-- custom tabline
+local noname = "[unnamed]"
+
+local function extract_filename(win)
+	local b = vim.api.nvim_win_get_buf(win)
+	local fullname = vim.api.nvim_buf_get_name(b)
+	local mod = vim.api.nvim_buf_get_option(b, 'modified') and "◈ " or ""
+	if fullname ~= "" then
+		local shortname = vim.fn.fnamemodify(fullname, ":~:.:gs%(.?[^/])[^/]*/%\1/%")
+		if #shortname > 30 then shortname = vim.fn.fnamemodify(fullname, ":t") end
+		return mod .. shortname
+	end
 end
 
--- Fix markdown indentation settings
-vim.g.markdown_recommended_style = 0
+local function get_best_window_filename(tabpage, window)
+	local filename = extract_filename(window)
+	if filename == nil then
+		local wins = vim.api.nvim_tabpage_list_wins(tabpage)
+		if #wins > 1 then
+			for _, win in ipairs(wins) do
+				filename = extract_filename(win)
+				break
+			end
+		end
+	end
+	if filename == nil then
+		return noname
+	end
+	return filename
+end
+
+local function is_float_win(win)
+	local config = vim.api.nvim_win_get_config(win)
+	return config.zindex and config.zindex > 0
+end
+
+local function getname(tabpage)
+	-- vim.F.npcall(vim.api.nvim_tabpage_get_var, tabpage, "tab_title")
+	local title = vim.t[tabpage].tab_title
+	if title ~= nil then
+		return title
+	end
+
+	local window = vim.api.nvim_tabpage_get_win(tabpage)
+	-- don't replace the last filename-buffer w/ floating windows
+	if is_float_win(window) then
+		return vim.t[tabpage].last_buffer_filename
+	end
+
+	local filename = get_best_window_filename(tabpage, window)
+	vim.t[tabpage].last_buffer_filename = filename
+	return filename
+end
+
+function Tabline()
+	local tl = {}
+	local current = vim.api.nvim_get_current_tabpage()
+	for i, tabpage in ipairs(vim.api.nvim_list_tabpages()) do
+		local hi = tabpage == current and "%#TabLineSel#" or "%#TabLine#"
+		local hiSep = tabpage == current and "%#TabLineSelSep#" or "%#TabLineSep#"
+		table.insert(tl, "%" .. i .. "T") -- mouse click target region
+		table.insert(tl, hi .. " " .. getname(tabpage) .. " ")
+		table.insert(tl, hiSep .. "▓▒░ " .. hi)
+	end
+	table.insert(tl, "%T") -- end mouse click region(s).
+	table.insert(tl, "%#TabLineFill#")
+	return table.concat(tl, '')
+end
+
+vim.opt.tabline = [[%!v:lua.Tabline()]]

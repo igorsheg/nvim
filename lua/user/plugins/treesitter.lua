@@ -16,22 +16,18 @@ return {
 				"dockerfile",
 				"go",
 				"graphql",
-				"hcl",
 				"html",
 				"javascript",
 				"json",
 				"lua",
 				"markdown",
 				"markdown_inline",
-				"php",
 				"python",
 				"regex",
 				"regex",
-				"ruby",
 				"rust",
 				"scss",
 				"sql",
-				"terraform",
 				"tsx",
 				"typescript",
 				"vim",
@@ -116,7 +112,7 @@ return {
 			},
 		})
 
-		local r = require("utils.remaps")
+		local r = require("user.utils.remaps")
 		r.noremap("n", "<leader>dp", function()
 			vim.treesitter.inspect_tree({ command = "botright 60vnew" })
 		end, "treesitter playground")
