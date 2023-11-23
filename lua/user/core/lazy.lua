@@ -25,7 +25,7 @@ lazy.setup({
     require("user.plugins.trouble"),
     require("user.plugins.cmp"),
     require("user.plugins.copilot"),
-    require("user.plugins.fzf"),
+    -- require("user.plugins.fzf"),
     require("user.plugins.telescope"),
     require("user.plugins.luasnip"),
     require("user.plugins.indent"),
