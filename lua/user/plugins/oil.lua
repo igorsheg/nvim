@@ -1,4 +1,10 @@
-require('oil').setup({
+
+local M = {
+  "stevearc/oil.nvim",
+  event = "VeryLazy",
+}
+function M.config()
+require('oil').setup{
   delete_to_trash = true,
   trash_command = 'trash -F',
   use_default_keymaps = false,
@@ -40,7 +46,11 @@ require('oil').setup({
   progress = {
     border = vim.g.border_style,
   },
-})
+}
 
 -- Open Oil showing the parent directory of the file in the current buffer
 vim.keymap.set('n', '-', '<Cmd>Oil<CR>')
+
+end
+
+return M

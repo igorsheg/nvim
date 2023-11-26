@@ -52,14 +52,15 @@ function M.config()
     "lua_ls",
     "cssls",
     "html",
-    "tsserver",
-    "astro",
+    -- "tsserver",
     "pyright",
     "bashls",
     "jsonls",
     "yamlls",
     "marksman",
     "tailwindcss",
+    "rust_analyzer",
+    "gopls",
   }
 
   local default_diagnostic_config = {
@@ -110,6 +111,18 @@ function M.config()
     if server == "lua_ls" then
       require("neodev").setup({})
     end
+
+    lspconfig.eslint.setup({
+      settings = {
+        packageManager = "yarn",
+      },
+      on_attach = function(client, bufnr)
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          buffer = bufnr,
+          command = "EslintFixAll",
+        })
+      end,
+    })
 
     lspconfig[server].setup(opts)
   end

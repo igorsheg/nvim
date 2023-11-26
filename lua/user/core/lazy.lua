@@ -19,6 +19,9 @@ end
 
 lazy.setup({
   spec = {
+    require("user.plugins.alpha"),
+    require("user.plugins.oil"),
+    require("user.plugins.conform"),
     require("user.plugins.primer-dark"),
     require("user.plugins.dressing"),
     require("user.plugins.navic"),
@@ -43,12 +46,13 @@ lazy.setup({
     require("user.plugins.git"),
     require("user.plugins.bufferline"),
     require("user.plugins.schemastore"),
-    require("user.plugins.null-ls"),
+    require("user.plugins.ts-tools"),
     require("user.plugins.mason"),
     require("user.plugins.comment"),
     require("user.plugins.toggleterm"),
     require("user.plugins.diffview"),
     require("user.plugins.harpoon"),
+    require("user.plugins.bfdelete"),
   },
   install = {
     colorscheme = { "primer_dark" },

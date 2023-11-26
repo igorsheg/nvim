@@ -1,4 +1,4 @@
-vim.g.mapleader = ' '
+vim.g.mapleader = " "
 
 local opts = { noremap = true, silent = true }
 local silent = { silent = true }
@@ -28,7 +28,7 @@ keymap("n", "<leader>A", [[<cmd>Alpha<CR>]], opts)
 keymap("n", "<leader>w", [[<cmd>w!<CR>]], opts)
 keymap("n", "<leader>q", [[<cmd>q!<CR>]], opts)
 keymap("n", "<leader>e", [[<cmd>NvimTreeToggle<CR>]], opts)
-keymap("n", "<leader>c", [[<cmd>lua MiniBufremove.delete()<CR>]], opts)
+-- keymap("n", "<leader>c", [[<cmd>lua MiniBufremove.delete()<CR>]], opts)
 keymap("n", "<leader>C", [[<cmd>%bdelete|edit #|normal `"<CR>]], opts)
 keymap("n", "<leader>5", [[<cmd>lua require('harpoon.ui').nav_file(5)<CR>]], opts)
 keymap("n", "<leader>f", [[<cmd>Telescope find_files no_ignore=false hidden=true<CR>]], opts)
@@ -95,18 +95,21 @@ keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- keymap("n", "<leader>m", [[<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>]], opts)
 
 -- Split
-keymap('n', '<c-w><enter>', [[:vsplit <BAR> wincmd l <BAR> Telescope find_files no_ignore=false hidden=true<CR>]], opts)
-keymap('n', '<Leader>-', ':split<CR>', opts)
-keymap('n', '<Leader><BS>', ':vsplit<CR>', opts)
+keymap("n", "<c-w><enter>", [[:vsplit <BAR> wincmd l <BAR> Telescope find_files no_ignore=false hidden=true<CR>]], opts)
+keymap("n", "<Leader>-", ":split<CR>", opts)
+keymap("n", "<Leader><BS>", ":vsplit<CR>", opts)
 
 local function find_project_root(markers)
-  local dir = vim.fn.expand('%:p:h')
+  local dir = vim.fn.expand("%:p:h")
   local root = dir
   local found = false
 
   while dir do
     for _, marker in pairs(markers) do
-      if vim.fn.isdirectory(vim.fn.expand(dir .. '/' .. marker)) ~= 0 or vim.fn.filereadable(vim.fn.expand(dir .. '/' .. marker)) ~= 0 then
+      if
+        vim.fn.isdirectory(vim.fn.expand(dir .. "/" .. marker)) ~= 0
+        or vim.fn.filereadable(vim.fn.expand(dir .. "/" .. marker)) ~= 0
+      then
         root = dir
         found = true
         break
@@ -117,7 +120,7 @@ local function find_project_root(markers)
       break
     end
 
-    dir = vim.fn.fnamemodify(dir, ':h')
+    dir = vim.fn.fnamemodify(dir, ":h")
   end
 
   return root
@@ -125,13 +128,13 @@ end
 
 local function open_in_vscode()
   -- Markers that denote the root of the project
-  local root_markers = { '.git' } -- Add more markers as needed
+  local root_markers = { ".git" } -- Add more markers as needed
   local project_root = find_project_root(root_markers)
-  local current_file = vim.fn.expand('%:p')
+  local current_file = vim.fn.expand("%:p")
 
   -- Open VSCode with the project root and the current file
-  vim.fn.system('code --new-window ' .. project_root .. ' ' .. current_file)
+  vim.fn.system("code --new-window " .. project_root .. " " .. current_file)
 end
 
 -- Open VsCode
-keymap('n', '<leader>vs', open_in_vscode, opts)
+keymap("n", "<leader>vs", open_in_vscode, opts)
