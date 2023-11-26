@@ -1,164 +1,117 @@
-return {
-	"nvim-treesitter/nvim-treesitter",
-	dependencies = {
-		"RRethy/nvim-treesitter-textsubjects",
-		"nvim-treesitter/nvim-treesitter-textobjects",
-	},
-	event = { "BufReadPost", "BufNewFile" },
-	config = function()
-		local treesitter = require("nvim-treesitter.configs")
-
-		---@diagnostic disable-next-line
-		treesitter.setup({
-			ensure_installed = {
-				"bash",
-				"css",
-				"dockerfile",
-				"go",
-				"graphql",
-				"html",
-				"javascript",
-				"json",
-				"lua",
-				"markdown",
-				"markdown_inline",
-				"python",
-				"regex",
-				"regex",
-				"rust",
-				"scss",
-				"sql",
-				"tsx",
-				"typescript",
-				"vim",
-				"yaml",
-			},
-			highlight = {
-				enable = true,
-			},
-			match = {
-				enable = true,
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "zi",
-					node_incremental = "zi",
-					scope_incremental = "zo",
-					node_decremental = "zd",
-				},
-			},
-			indent = {
-				enable = true,
-			},
-			-- textobjects = {
-			--   select = {
-			--     enable = true,
-			--     lookahead = true,
-			--     keymaps = {
-			--       ["af"] = "@function.outer",
-			--       ["if"] = "@function.inner",
-			--       ["ac"] = "@class.outer",
-			--       ["ic"] = "@class.inner",
-			--
-			--       -- xml attribute
-			--       ["ax"] = "@attribute.outer",
-			--       ["ix"] = "@attribute.inner",
-			--
-			--       -- json
-			--       ["ak"] = "@key.outer",
-			--       ["ik"] = "@key.inner",
-			--       ["av"] = "@value.outer",
-			--       ["iv"] = "@value.inner",
-			--     },
-			--   },
-			swap = {
-				enable = true,
-				swap_next = {
-					["<leader>rp"] = "@parameter.inner",
-				},
-				swap_previous = {
-					["<leader>rP"] = "@parameter.inner",
-				},
-			},
-			--   move = {
-			--     enable = true,
-			--     set_jumps = true, -- whether to set jumps in the jumplist
-			--     goto_next_start = {
-			--       ["]m"] = "@function.outer",
-			--       ["]]"] = "@class.outer",
-			--     },
-			--     goto_next_end = {
-			--       ["]M"] = "@function.outer",
-			--       ["]["] = "@class.outer",
-			--     },
-			--     goto_previous_start = {
-			--       ["[m"] = "@function.outer",
-			--       ["[["] = "@class.outer",
-			--     },
-			--     goto_previous_end = {
-			--       ["[M"] = "@function.outer",
-			--       ["[]"] = "@class.outer",
-			--     },
-			--   },
-			-- },
-			textsubjects = {
-				enable = true,
-				keymaps = {
-					["."] = "textsubjects-smart",
-					[";"] = "textsubjects-container-outer",
-					["i;"] = "textsubjects-container-inner",
-				},
-			},
-		})
-
-		local r = require("user.utils.remaps")
-		r.noremap("n", "<leader>dp", function()
-			vim.treesitter.inspect_tree({ command = "botright 60vnew" })
-		end, "treesitter playground")
-
-		r.noremap("n", "<C-e>", function()
-			local result = vim.treesitter.get_captures_at_cursor(0)
-			print(vim.inspect(result))
-		end, "show treesitter capture group")
-
-		r.map_virtual("zi", "init selection")
-		r.map_virtual("zi", "expand node")
-		r.map_virtual("zo", "expand scope")
-		r.map_virtual("zd", "decrement scope")
-
-		-- r.map_virtual("af", "Function outer motion")
-		-- r.map_virtual("if", "Function inner motion")
-		-- r.map_virtual("ac", "Class outer motion")
-		-- r.map_virtual("ic", "Class inner motion")
-		--
-		-- r.map_virtual("ax", "Attribute (html, xml) outer motion")
-		-- r.map_virtual("ix", "Attribute (html, xml) inner motion")
-		--
-		-- r.map_virtual("ak", "Json key outer motion")
-		-- r.map_virtual("ik", "Json key inner motion")
-		--
-		-- r.map_virtual("av", "Json value outer motion")
-		-- r.map_virtual("iv", "Json value inner motion")
-		--
-		-- r.which_key("fp", "parameters")
-		--
-		r.map_virtual("<leader>rp", "swap parameter to next")
-		r.map_virtual("<leader>rP", "swap parameter to previous")
-		--
-		-- r.map_virtual("]m", "Go to next function (start)")
-		-- r.map_virtual("]M", "Go to next function (end)")
-		--
-		-- r.map_virtual("]]", "Go to next class (start)")
-		-- r.map_virtual("][", "Go to next class (end)")
-		--
-		-- r.map_virtual("[m", "Go to previous function (start)")
-		-- r.map_virtual("[M", "Go to previous function (end)")
-		--
-		-- r.map_virtual("[[", "Go to previous class (start)")
-		-- r.map_virtual("[]", "Go to previous class (end)")
-	end,
-	build = function()
-		vim.cmd [[TSUpdate]]
-	end,
+local M = {
+  "nvim-treesitter/nvim-treesitter",
+  event = { "BufReadPost", "BufNewFile" },
+  commit = "afa103385a2b5ef060596ed822ef63276ae88016",
+  build = ":TSUpdate",
+  dependencies = {
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      event = "VeryLazy",
+      commit = "78c49ca7d2f7ccba2115c11422c037713c978ad1",
+    },
+    {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      event = "VeryLazy",
+      commit = "92e688f013c69f90c9bbd596019ec10235bc51de",
+    },
+    {
+      "windwp/nvim-ts-autotag",
+      event = "VeryLazy",
+      commit = "6be1192965df35f94b8ea6d323354f7dc7a557e4",
+    },
+    {
+      "windwp/nvim-autopairs",
+      event = "InsertEnter",
+      commit = "f6c71641f6f183427a651c0ce4ba3fb89404fa9e",
+    },
+  },
 }
+function M.config()
+  require("nvim-treesitter.configs").setup {
+    ensure_installed = { "lua", "markdown", "markdown_inline", "bash", "python" }, -- put the language you want in this array
+    ignore_install = { "" },
+    sync_install = false,
+    highlight = {
+      enable = true,
+      disable = { "markdown" },
+      additional_vim_regex_highlighting = false,
+    },
+
+    indent = { enable = true },
+
+    matchup = {
+      enable = { "astro" },
+      disable = { "lua" },
+    },
+
+    autotag = { enable = true },
+
+    context_commentstring = {
+      enable = true,
+      enable_autocmd = false,
+    },
+
+    autopairs = { enable = true },
+
+    textobjects = {
+      select = {
+        enable = true,
+        -- Automatically jump forward to textobj, similar to targets.vim
+        lookahead = true,
+        keymaps = {
+          -- You can use the capture groups defined in textobjects.scm
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["at"] = "@class.outer",
+          ["it"] = "@class.inner",
+          ["ac"] = "@call.outer",
+          ["ic"] = "@call.inner",
+          ["aa"] = "@parameter.outer",
+          ["ia"] = "@parameter.inner",
+          ["al"] = "@loop.outer",
+          ["il"] = "@loop.inner",
+          ["ai"] = "@conditional.outer",
+          ["ii"] = "@conditional.inner",
+          ["a/"] = "@comment.outer",
+          ["i/"] = "@comment.inner",
+          ["ab"] = "@block.outer",
+          ["ib"] = "@block.inner",
+          ["as"] = "@statement.outer",
+          ["is"] = "@scopename.inner",
+          ["aA"] = "@attribute.outer",
+          ["iA"] = "@attribute.inner",
+          ["aF"] = "@frame.outer",
+          ["iF"] = "@frame.inner",
+        },
+      },
+    },
+  }
+
+  -- local configs = require "nvim-treesitter.configs"
+  --
+  -- configs.setup {
+  --   -- modules = {
+  --   --
+  --   --
+  --   --   rainbow = {
+  --   --     enable = false,
+  --   --     query = {
+  --   --       "rainbow-parens",
+  --   --     },
+  --   --     strategy = require("ts-rainbow").strategy.global,
+  --   --     hlgroups = {
+  --   --       -- "TSRainbowRed",
+  --   --       "TSRainbowBlue",
+  --   --       -- "TSRainbowOrange",
+  --   --       -- "TSRainbowCoral",
+  --   --       "TSRainbowPink",
+  --   --       "TSRainbowYellow",
+  --   --       -- "TSRainbowViolet",
+  --   --       -- "TSRainbowGreen",
+  --   --     },
+  --   --   },
+  --   -- },
+  -- }
+end
+
+return M

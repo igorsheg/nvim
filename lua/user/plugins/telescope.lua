@@ -1,94 +1,122 @@
-return {
-	"nvim-telescope/telescope.nvim",
-	event = "VeryLazy",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"debugloop/telescope-undo.nvim",
-		"nvim-telescope/telescope-file-browser.nvim",
-		"nvim-telescope/telescope-live-grep-args.nvim",
-	},
-	config = function()
-		local telescope = require("telescope")
-		local tele_actions = require("telescope.actions")
-		local lga_actions = require("telescope-live-grep-args.actions")
-		local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
-		local undo_actions = require("telescope-undo.actions")
-		local r = require("user.utils.remaps")
-		local i = require("user.utils.icons")
-		telescope.setup({
-			defaults = {
-				layout_config = {
-					anchor = "center",
-					height = 0.8,
-					width = 0.9,
-					preview_width = 0.6,
-					prompt_position = "bottom",
-				},
-				borderchars = i.telescope,
-				mappings = {
-					i = {
-						["<esc>"] = tele_actions.close,
-					},
-				},
-			},
-			extensions = {
-				undo = {
-					use_delta = true,
-					side_by_side = true,
-					entry_format = "󰣜  #$ID, $STAT, $TIME",
-					layout_strategy = "flex",
-					mappings = {
-						i = {
-							["<cr>"] = undo_actions.yank_additions,
-							["§"] = undo_actions.yank_deletions, -- term mapped to shift+enter
-							["<c-\\>"] = undo_actions.restore,
-						},
-					},
-				},
-				live_grep_args = {
-					auto_quoting = true,
-					mappings = {
-						i = {
-							["<c-\\>"] = lga_actions.quote_prompt({ postfix = " --hidden " }),
-						},
-					},
-				},
-				file_browser = {
-					depth = 1,
-					auto_depth = false,
-					hidden = { file_browser = true, folder_browser = true },
-					hide_parent_dir = false,
-					collapse_dirs = false,
-					prompt_path = false,
-					quiet = false,
-					dir_icon = "󰉓 ",
-					dir_icon_hl = "Default",
-					display_stat = { date = true, size = true, mode = true },
-					git_status = true,
-				},
-			},
-		})
-		r.noremap("n", "<leader>u", ":Telescope undo<cr>", "undo tree")
-		r.noremap("n", "\\", function()
-			telescope.extensions.live_grep_args.live_grep_args({
-				prompt_title = 'grep',
-				additional_args = '-i',
-			})
-		end, "live grep")
-		r.noremap("n", "<leader>o", ":Telescope oldfiles<cr>", "old files")
-		r.noremap("n", "<leader>gc", function()
-			lga_shortcuts.grep_word_under_cursor({ postfix = " --hidden " })
-		end, "grep under cursor")
-		r.noremap("n", "<leader>f", function()
-			telescope.extensions.file_browser.file_browser()
-		end, "browse files")
-		r.noremap("n", "<leader>.", function()
-			telescope.extensions.file_browser.file_browser({
-				path = vim.fn.stdpath("config")
-			})
-		end, "nvim dotfiles")
-		telescope.load_extension("undo")
-		telescope.load_extension("file_browser")
-		telescope.load_extension("live_grep_args")
-	end,
+local M = {
+  "nvim-telescope/telescope.nvim",
+  dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true }, "nvim-lua/plenary.nvim", },
+  commit = "74ce793a60759e3db0d265174f137fb627430355",
+  lazy = true,
+  cmd = "Telescope",
 }
+
+function M.config()
+  local icons = require "user.utils.icons"
+  local actions = require "telescope.actions"
+
+  require("telescope").setup {
+    defaults = {
+      prompt_prefix = icons.ui.Telescope .. " ",
+      selection_caret = icons.ui.Forward .. " ",
+      entry_prefix = "   ",
+      initial_mode = "insert",
+      selection_strategy = "reset",
+      path_display = { "smart" },
+      color_devicons = true,
+      set_env = { ["COLORTERM"] = "truecolor" },
+      sorting_strategy = nil,
+      layout_strategy = nil,
+      layout_config = {},
+      vimgrep_arguments = {
+        "rg",
+        "--color=never",
+        "--no-heading",
+        "--with-filename",
+        "--line-number",
+        "--column",
+        "--smart-case",
+        "--hidden",
+        "--glob=!.git/",
+      },
+
+      mappings = {
+        i = {
+          ["<C-n>"] = actions.cycle_history_next,
+          ["<C-p>"] = actions.cycle_history_prev,
+
+          ["<C-j>"] = actions.move_selection_next,
+          ["<C-k>"] = actions.move_selection_previous,
+        },
+        n = {
+          ["<esc>"] = actions.close,
+          ["j"] = actions.move_selection_next,
+          ["k"] = actions.move_selection_previous,
+          ["q"] = actions.close,
+        },
+      },
+    },
+    pickers = {
+      live_grep = {
+        theme = "dropdown",
+      },
+
+      grep_string = {
+        theme = "dropdown",
+      },
+
+      find_files = {
+        theme = "dropdown",
+        previewer = false,
+      },
+
+      buffers = {
+        theme = "dropdown",
+        previewer = false,
+        initial_mode = "normal",
+        mappings = {
+          i = {
+            ["<C-d>"] = actions.delete_buffer,
+          },
+          n = {
+            ["dd"] = actions.delete_buffer,
+          },
+        },
+      },
+
+      planets = {
+        show_pluto = true,
+        show_moon = true,
+      },
+
+      colorscheme = {
+        enable_preview = true,
+      },
+
+      lsp_references = {
+        theme = "dropdown",
+        initial_mode = "normal",
+      },
+
+      lsp_definitions = {
+        theme = "dropdown",
+        initial_mode = "normal",
+      },
+
+      lsp_declarations = {
+        theme = "dropdown",
+        initial_mode = "normal",
+      },
+
+      lsp_implementations = {
+        theme = "dropdown",
+        initial_mode = "normal",
+      },
+    },
+    extensions = {
+      fzf = {
+        fuzzy = true,                   -- false will only do exact matching
+        override_generic_sorter = true, -- override the generic sorter
+        override_file_sorter = true,    -- override the file sorter
+        case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+      },
+    },
+  }
+end
+
+return M

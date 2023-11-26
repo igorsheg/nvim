@@ -24,10 +24,6 @@ keymap("v", "<", "<gv^")
 
 -- Normal Mode Mappings
 keymap("n", "<leader> ", [[<Nop>]], opts)
-keymap("n", "<leader>1", [[<cmd>lua require('harpoon.ui').nav_file(1)<CR>]], opts)
-keymap("n", "<leader>2", [[<cmd>lua require('harpoon.ui').nav_file(2)<CR>]], opts)
-keymap("n", "<leader>3", [[<cmd>lua require('harpoon.ui').nav_file(3)<CR>]], opts)
-keymap("n", "<leader>4", [[<cmd>lua require('harpoon.ui').nav_file(4)<CR>]], opts)
 keymap("n", "<leader>A", [[<cmd>Alpha<CR>]], opts)
 keymap("n", "<leader>w", [[<cmd>w!<CR>]], opts)
 keymap("n", "<leader>q", [[<cmd>q!<CR>]], opts)
@@ -95,8 +91,8 @@ keymap({ "n", "v" }, "<leader>d", [["_d]])
 
 keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-keymap("n", "<leader>a", [[<cmd>lua require('harpoon.mark').add_file()<CR>]], opts)
-keymap("n", "<leader>m", [[<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>]], opts)
+-- keymap("n", "<leader>a", [[<cmd>lua require('harpoon.mark').add_file()<CR>]], opts)
+-- keymap("n", "<leader>m", [[<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>]], opts)
 
 -- Split
 keymap('n', '<c-w><enter>', [[:vsplit <BAR> wincmd l <BAR> Telescope find_files no_ignore=false hidden=true<CR>]], opts)

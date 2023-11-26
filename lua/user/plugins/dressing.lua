@@ -1,4 +1,12 @@
-require("dressing").setup({
+
+local M = {
+  "stevearc/dressing.nvim",
+  event = "VeryLazy",
+  lazy = false,
+}
+
+function M.config()
+  require("neogit").setup {
   input = {
     -- Set to false to disable the vim.ui.input implementation
     enabled = true,
@@ -141,4 +149,8 @@ require("dressing").setup({
       end
     end,
   },
-})
+  }
+end
+
+
+return M
