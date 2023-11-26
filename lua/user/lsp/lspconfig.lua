@@ -49,7 +49,7 @@ end
 
 local function on_attach(client, bufnr)
   lsp_keymaps(bufnr)
-  -- vim.cmd.autocmd("BufWritePre <buffer> lua vim.lsp.buf.format()")
+  vim.cmd.autocmd("BufWritePre <buffer> lua vim.lsp.buf.format()")
   if client.server_capabilities.documentSymbolProvider then
     navic.attach(client, bufnr)
   end
