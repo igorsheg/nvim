@@ -24,18 +24,17 @@ keymap("v", "<", "<gv^")
 
 -- Normal Mode Mappings
 keymap("n", "<leader> ", [[<Nop>]], opts)
-keymap("n", "<leader>A", [[<cmd>Alpha<CR>]], opts)
+-- keymap("n", "<leader>A", [[<cmd>Alpha<CR>]], opts)
 keymap("n", "<leader>w", [[<cmd>w!<CR>]], opts)
 keymap("n", "<leader>q", [[<cmd>q!<CR>]], opts)
 keymap("n", "<leader>e", [[<cmd>NvimTreeToggle<CR>]], opts)
 -- keymap("n", "<leader>c", [[<cmd>lua MiniBufremove.delete()<CR>]], opts)
-keymap("n", "<leader>C", [[<cmd>%bdelete|edit #|normal `"<CR>]], opts)
-keymap("n", "<leader>5", [[<cmd>lua require('harpoon.ui').nav_file(5)<CR>]], opts)
+-- keymap("n", "<leader>C", [[<cmd>%bdelete|edit #|normal `"<CR>]], opts)
 keymap("n", "<leader>f", [[<cmd>Telescope find_files no_ignore=false hidden=true<CR>]], opts)
 keymap("n", "<leader>F", [[<cmd>Telescope grep_string search= theme=ivy only_sort_text=true<CR>]], opts)
 keymap("n", "<leader>,", [[<cmd>Telescope resume<CR>]], opts)
-keymap("n", "<leader>/", [[<cmd>lua require('Comment.api').toggle.linewise.current()<CR>]], opts)
-keymap("n", "<leader>G", [[<cmd>Git<CR>]], opts)
+-- keymap("n", "<leader>/", [[<cmd>lua require('Comment.api').toggle.linewise.current()<CR>]], opts)
+-- keymap("n", "<leader>G", [[<cmd>Git<CR>]], opts)
 keymap("n", "<leader>s", [[:%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
 -- keymap("n", "<leader>v", [[:vsplit <BAR> wincmd l <BAR> wincmd p <BAR> wincmd h <BAR> b# <BAR> wincmd l<CR>]], opts)
 -- keymap("n", "<leader>h", [[<C-w>s]], opts)
@@ -100,7 +99,7 @@ keymap("n", "<Leader>-", ":split<CR>", opts)
 keymap("n", "<Leader><BS>", ":vsplit<CR>", opts)
 
 local function find_project_root(markers)
-  local dir = vim.fn.expand("%:p:h")
+  local dir = vim.fn.expand "%:p:h"
   local root = dir
   local found = false
 
@@ -130,7 +129,7 @@ local function open_in_vscode()
   -- Markers that denote the root of the project
   local root_markers = { ".git" } -- Add more markers as needed
   local project_root = find_project_root(root_markers)
-  local current_file = vim.fn.expand("%:p")
+  local current_file = vim.fn.expand "%:p"
 
   -- Open VSCode with the project root and the current file
   vim.fn.system("code --new-window " .. project_root .. " " .. current_file)

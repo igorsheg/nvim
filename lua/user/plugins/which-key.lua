@@ -148,9 +148,9 @@ function M.config()
     nowait = true, -- use `nowait` when creating keymaps
   }
 
-  local which_key = require("which-key")
+  local which_key = require "which-key"
 
-  which_key.setup({
+  which_key.setup {
     plugins = {
       marks = false, -- shows a list of your marks on ' and `
       registers = false, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
@@ -206,7 +206,7 @@ function M.config()
       buftypes = {},
       filetypes = { "TelescopePrompt" },
     },
-  })
+  }
 
   which_key.register(mappings, opts)
   which_key.register(vmappings, vopts)

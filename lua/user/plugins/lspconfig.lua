@@ -45,8 +45,8 @@ function M.common_capabilities()
 end
 
 function M.config()
-  local lspconfig = require("lspconfig")
-  local icons = require("user.utils.icons")
+  local lspconfig = require "lspconfig"
+  local icons = require "user.utils.icons"
 
   local servers = {
     "lua_ls",
@@ -73,7 +73,7 @@ function M.config()
         { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
       },
     },
-    virtual_text = false,
+    virtual_text = true,
     update_in_insert = false,
     underline = true,
     severity_sort = true,
@@ -109,10 +109,10 @@ function M.config()
     end
 
     if server == "lua_ls" then
-      require("neodev").setup({})
+      require("neodev").setup {}
     end
 
-    lspconfig.eslint.setup({
+    lspconfig.eslint.setup {
       settings = {
         packageManager = "yarn",
       },
@@ -122,7 +122,7 @@ function M.config()
           command = "EslintFixAll",
         })
       end,
-    })
+    }
 
     lspconfig[server].setup(opts)
   end
