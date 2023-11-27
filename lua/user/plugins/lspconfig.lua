@@ -52,6 +52,7 @@ function M.config()
     "lua_ls",
     "cssls",
     "html",
+    "rnix",
     -- "tsserver",
     "pyright",
     "bashls",
