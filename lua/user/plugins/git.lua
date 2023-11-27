@@ -5,9 +5,9 @@ local M = {
 }
 
 function M.config()
-  local icons = require "user.utils.icons"
+  local icons = require("user.utils.icons")
 
-  require("neogit").setup {
+  require("neogit").setup({
     disable_signs = false,
     -- disable_hint = true,
     disable_context_highlighting = false,
@@ -100,7 +100,7 @@ function M.config()
     --     -- ["s"] = "",
     --   },
     -- },
-  }
+  })
 end
 
 return M
