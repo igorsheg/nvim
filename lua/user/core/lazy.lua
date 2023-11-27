@@ -53,6 +53,7 @@ lazy.setup({
     require("user.plugins.diffview"),
     require("user.plugins.harpoon"),
     require("user.plugins.bfdelete"),
+    require("user.plugins.fidget"),
   },
   install = {
     colorscheme = { "primer_dark" },
