@@ -4,6 +4,13 @@ local opts = { noremap = true, silent = true }
 local silent = { silent = true }
 local keymap = vim.keymap.set
 
+-- Normal --
+-- Disable Space bar since it'll be used as the leader key
+keymap("n", "<space>", "<nop>")
+
+-- Swap between last two buffers
+keymap("n", "<leader>'", "<C-^>", { desc = "Switch to last buffer" })
+
 -- Map H and L to ^ and $
 keymap("n", "H", "^", opts)
 keymap("n", "L", "$", opts)
@@ -12,11 +19,20 @@ keymap("n", "L", "$", opts)
 keymap("v", "J", [[:move '>+1<CR>gv=gv]], opts)
 keymap("v", "K", [[:move '<-2<CR>gv=gv]], opts)
 
--- Make certain motions keep cursor in the middle
+-- Center buffer while navigating
 keymap("n", "<C-u>", "<C-u>zz")
 keymap("n", "<C-d>", "<C-d>zz")
-keymap("n", "n", "nzz")
+keymap("n", "{", "{zz")
+keymap("n", "}", "}zz")
 keymap("n", "N", "Nzz")
+keymap("n", "n", "nzz")
+keymap("n", "G", "Gzz")
+keymap("n", "gg", "ggzz")
+keymap("n", "<C-i>", "<C-i>zz")
+keymap("n", "<C-o>", "<C-o>zz")
+keymap("n", "%", "%zz")
+keymap("n", "*", "*zz")
+keymap("n", "#", "#zz")
 
 -- Don't leave visual mode after indenting
 keymap("v", ">", ">gv^")
@@ -35,7 +51,14 @@ keymap("n", "<leader>F", [[<cmd>Telescope grep_string search= theme=ivy only_sor
 keymap("n", "<leader>,", [[<cmd>Telescope resume<CR>]], opts)
 -- keymap("n", "<leader>/", [[<cmd>lua require('Comment.api').toggle.linewise.current()<CR>]], opts)
 -- keymap("n", "<leader>G", [[<cmd>Git<CR>]], opts)
-keymap("n", "<leader>s", [[:%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
+-- keymap("n", "<leader>s", [[:%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
+
+keymap("n", "<leader>s", function()
+  local cmd = ":%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>"
+  local keys = vim.api.nvim_replace_termcodes(cmd, true, false, true)
+  vim.api.nvim_feedkeys(keys, "n", false)
+end)
+
 -- keymap("n", "<leader>v", [[:vsplit <BAR> wincmd l <BAR> wincmd p <BAR> wincmd h <BAR> b# <BAR> wincmd l<CR>]], opts)
 -- keymap("n", "<leader>h", [[<C-w>s]], opts)
 keymap("n", "<C-j>", [[<C-w>j]], opts)
@@ -49,8 +72,17 @@ keymap("n", "<C-Right>", [[:vertical resize +2<CR>]], opts)
 keymap("n", "<C-A-k>", [[<ESC>:m .-2<CR>==]], opts)
 keymap("n", "<C-A-j>", [[<ESC>:m .+1<CR>==]], opts)
 
-keymap("n", "[q", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
-keymap("n", "]q", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", opts)
+-- Goto next diagnostic of any severity
+keymap("n", "]d", function()
+  vim.diagnostic.goto_next {}
+  vim.api.nvim_feedkeys("zz", "n", false)
+end)
+
+-- Goto previous diagnostic of any severity
+keymap("n", "[d", function()
+  vim.diagnostic.goto_prev {}
+  vim.api.nvim_feedkeys("zz", "n", false)
+end)
 
 -- Visual Mode Mappings
 keymap("v", "<leader>/", [[<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>]], opts)

@@ -55,6 +55,7 @@ function M.config()
   vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
 
   local cmp = require "cmp"
+  local cmp_autopairs = require "nvim-autopairs.completion.cmp"
   local luasnip = require "luasnip"
   require("luasnip/loaders/from_vscode").lazy_load()
   require("luasnip").filetype_extend("typescriptreact", { "html" })
@@ -64,7 +65,11 @@ function M.config()
     return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
   end
 
-  local icons = require "user.utils..icons"
+  local icons = require "user.utils.icons"
+
+  require("nvim-autopairs").setup()
+  -- Integrate nvim-autopairs with cmp
+  cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
   cmp.setup {
     snippet = {
