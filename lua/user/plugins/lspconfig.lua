@@ -1,11 +1,9 @@
 local M = {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
-  commit = "e49b1e90c1781ce372013de3fa93a91ea29fc34a",
   dependencies = {
     {
       "folke/neodev.nvim",
-      commit = "b094a663ccb71733543d8254b988e6bebdbdaca4",
     },
   },
 }
@@ -53,7 +51,7 @@ function M.config()
     "cssls",
     "html",
     "rnix",
-    -- "tsserver",
+    "tsserver",
     "pyright",
     "bashls",
     "jsonls",
@@ -74,7 +72,11 @@ function M.config()
         { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
       },
     },
-    virtual_text = true,
+    -- virtual_text = true,
+    virtual_text = {
+      spacing = 12,
+      source = true,
+    }, -- disable virtual text
     update_in_insert = false,
     underline = true,
     severity_sort = true,
