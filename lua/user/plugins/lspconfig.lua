@@ -51,7 +51,7 @@ function M.config()
     "cssls",
     "html",
     "rnix",
-    "tsserver",
+    -- "tsserver",
     "pyright",
     "bashls",
     "jsonls",
