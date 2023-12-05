@@ -5,7 +5,7 @@ return {
     local lspkind = require "lspkind"
     local types = require "cmp.types"
 
-    local _, tabnine = pcall(require, "cmp_tabnine.config")
+    -- local _, tabnine = pcall(require, "cmp_tabnine.config")
 
     local cmp_status_ok, cmp = pcall(require, "cmp")
     if not cmp_status_ok then
@@ -103,7 +103,6 @@ return {
     -- ╰──────────────────────────────────────────────────────────╯
     local source_mapping = {
       npm = "  " .. "NPM",
-      cmp_tabnine = "  ",
       Copilot = "",
       Codeium = "",
       nvim_lsp = "  " .. "LSP",
@@ -221,16 +220,6 @@ return {
           item_with_kind.menu = vim.trim(item_with_kind.menu or "")
           item_with_kind.abbr = string.sub(item_with_kind.abbr, 1, item_with_kind.maxwidth)
 
-          if entry.source.name == "cmp_tabnine" then
-            if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-              item_with_kind.kind = " " .. lspkind.symbolic("Event", { with_text = false }) .. " TabNine"
-              item_with_kind.menu = item_with_kind.menu .. entry.completion_item.data.detail
-            else
-              item_with_kind.kind = " " .. lspkind.symbolic("Event", { with_text = false }) .. " TabNine"
-              item_with_kind.menu = item_with_kind.menu .. " TBN"
-            end
-          end
-
           local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
           if completion_context ~= nil and completion_context ~= "" then
             item_with_kind.menu = item_with_kind.menu .. [[ -> ]] .. completion_context
@@ -255,9 +244,7 @@ return {
           -- Limits LSP results to specific types based on line context (FIelds, Methods, Variables)
           entry_filter = limit_lsp_types,
         },
-        { name = "codeium", priority = 9 },
         { name = "copilot", priority = 9 },
-        { name = "cmp_tabnine", priority = 7 },
         { name = "luasnip", priority = 7 },
         {
           name = "buffer",
@@ -302,15 +289,6 @@ return {
     -- ╭──────────────────────────────────────────────────────────╮
     -- │ Tabnine Setup                                            │
     -- ╰──────────────────────────────────────────────────────────╯
-    tabnine:setup {
-      max_lines = 1000,
-      max_num_results = 3,
-      sort = true,
-      show_prediction_strength = true,
-      run_on_every_keystroke = true,
-      snipper_placeholder = "..",
-      ignored_file_types = {},
-    }
   end,
   dependencies = {
     "hrsh7th/cmp-nvim-lua",
@@ -322,10 +300,6 @@ return {
     "hrsh7th/cmp-calc",
     "saadparwaiz1/cmp_luasnip",
     { "L3MON4D3/LuaSnip", dependencies = "rafamadriz/friendly-snippets" },
-    {
-      "tzachar/cmp-tabnine",
-      build = "./install.sh",
-    },
     {
       "zbirenbaum/copilot-cmp",
       config = function()

@@ -5,7 +5,7 @@ local M = {
 }
 
 function M.config()
-  require("dressing").setup({
+  require("dressing").setup {
     input = {
       -- Set to false to disable the vim.ui.input implementation
       enabled = true,
@@ -148,7 +148,7 @@ function M.config()
         end
       end,
     },
-  })
+  }
 end
 
 return M
