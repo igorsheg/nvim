@@ -5,7 +5,13 @@ local M = {
 }
 
 function M.config()
-  require("fidget").setup({})
+  require("fidget").setup {
+    integration = {
+      ["nvim-tree"] = {
+        enable = true, -- Integrate with nvim-tree/nvim-tree.lua (if installed)
+      },
+    },
+  }
 end
 
 return M

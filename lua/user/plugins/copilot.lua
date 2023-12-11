@@ -26,11 +26,11 @@ return {
         dependencies = "copilot.lua",
         opts = {},
         config = function(_, opts)
-          local copilot_cmp = require("copilot_cmp")
+          local copilot_cmp = require "copilot_cmp"
           copilot_cmp.setup(opts)
           require("user.utils.functions").on_attach(function(client)
             if client.name == "copilot" then
-              copilot_cmp._on_insert_enter({})
+              copilot_cmp._on_insert_enter {}
             end
           end)
         end,
@@ -38,7 +38,7 @@ return {
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
-      local cmp = require("cmp")
+      local cmp = require "cmp"
       table.insert(opts, { sources = { name = "copilot", group_index = 2 } })
 
       opts.sorting = {

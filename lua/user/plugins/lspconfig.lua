@@ -51,7 +51,7 @@ function M.config()
     "cssls",
     "html",
     "rnix",
-    -- "tsserver",
+    "tsserver",
     "pyright",
     "bashls",
     "jsonls",
@@ -102,6 +102,7 @@ function M.config()
 
   for _, server in pairs(servers) do
     local opts = {
+      inlayHints = true,
       on_attach = M.on_attach,
       capabilities = M.common_capabilities(),
     }
