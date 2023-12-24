@@ -65,6 +65,13 @@ function M.config()
       find_files = {
         theme = "dropdown",
         previewer = false,
+        find_command = {
+          "rg",
+          "--files",
+          "--hidden",
+          "-g",
+          "!.git",
+        },
       },
 
       buffers = {
