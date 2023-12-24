@@ -16,6 +16,11 @@ local M = {
       event = "VeryLazy",
     },
     {
+      "nvim-treesitter/nvim-treesitter-context",
+      config = true,
+      event = "BufReadPre",
+    },
+    {
       "windwp/nvim-autopairs",
       event = "InsertEnter",
     },
