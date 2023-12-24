@@ -11,6 +11,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "qf",
     "git",
     "help",
+    "oil",
+    "Oil",
     "man",
     "lspinfo",
     "spectre_panel",
