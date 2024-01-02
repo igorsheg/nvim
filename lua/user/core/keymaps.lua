@@ -47,15 +47,15 @@ keymap("n", "<leader>e", [[<cmd>NvimTreeToggle<CR>]], opts)
 -- keymap("n", "<leader>c", [[<cmd>lua MiniBufremove.delete()<CR>]], opts)
 -- keymap("n", "<leader>C", [[<cmd>%bdelete|edit #|normal `"<CR>]], opts)
 keymap("n", "<leader>f", [[<cmd>Telescope find_files theme=ivy no_ignore=false<CR>]], opts)
-keymap("n", "<leader>F", [[<cmd>Telescope grep_string search= theme=ivy only_sort_text=true<CR>]], opts)
+keymap("n", "<leader>F", [[<cmd>Telescope live_grep search= theme=ivy only_sort_text=true<CR>]], opts)
 
-keymap("n", "<leader>.", function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = "[/] Fuzzily search in current buffer" })
+-- keymap("n", "<leader>.", function()
+--   -- You can pass additional configuration to telescope to change theme, layout, etc.
+--   require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+--     winblend = 10,
+--     previewer = false,
+--   })
+-- end, { desc = "[/] Fuzzily search in current buffer" })
 
 keymap("n", "<leader>,", [[<cmd>Telescope resume<CR>]], opts)
 -- keymap("n", "<leader>/", [[<cmd>lua require('Comment.api').toggle.linewise.current()<CR>]], opts)
