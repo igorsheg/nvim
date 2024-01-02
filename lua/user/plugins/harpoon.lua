@@ -1,35 +1,62 @@
-local M = {
+return {
   "ThePrimeagen/harpoon",
   event = "VeryLazy",
-  dependencies = {
-    { "nvim-lua/plenary.nvim" },
-  },
+  branch = "harpoon2",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  config = function()
+    local harpoon = require "harpoon"
+    harpoon:setup()
+
+    -- harpoon2
+    vim.keymap.set("n", "<leader>a", function()
+      harpoon:list():append()
+    end)
+    vim.keymap.set("n", "<leader>m", function()
+      harpoon.ui:toggle_quick_menu(harpoon:list())
+    end)
+
+    vim.keymap.set("n", "<leader>1", function()
+      harpoon:list():select(1)
+    end)
+    vim.keymap.set("n", "<leader>2", function()
+      harpoon:list():select(2)
+    end)
+    vim.keymap.set("n", "<leader>3", function()
+      harpoon:list():select(3)
+    end)
+    vim.keymap.set("n", "<leader>4", function()
+      harpoon:list():select(4)
+    end)
+
+    local conf = require("telescope.config").values
+    local function toggle_telescope(harpoon_files)
+      local file_paths = {}
+      for _, item in ipairs(harpoon_files.items) do
+        table.insert(file_paths, item.value)
+      end
+
+      require("telescope.pickers")
+        .new({}, {
+          prompt_title = "Harpoon",
+          finder = require("telescope.finders").new_table {
+            results = file_paths,
+          },
+          previewer = conf.file_previewer {},
+          sorter = conf.generic_sorter {},
+        })
+        :find()
+    end
+
+    vim.keymap.set("n", "<C-e>", function()
+      toggle_telescope(harpoon:list())
+    end, { desc = "Open harpoon window" })
+
+    -- Toggle previous & next buffers stored within Harpoon list
+    -- vim.keymap.set("n", "<S-h>", function()
+    --   harpoon:list():prev()
+    -- end)
+    -- vim.keymap.set("n", "<S-l>", function()
+    --   harpoon:list():next()
+    -- end)
+  end,
 }
-
-function M.config()
-  local keymap = vim.keymap.set
-  local opts = { noremap = true, silent = true }
-
-  keymap("n", "<leader>a", "<cmd>lua require('harpoon.mark').add_file()<CR>", opts)
-  keymap("n", "<leader>m", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", opts)
-  keymap("n", "<leader>1", [[<cmd>lua require('harpoon.ui').nav_file(1)<CR>]], opts)
-  keymap("n", "<leader>2", [[<cmd>lua require('harpoon.ui').nav_file(2)<CR>]], opts)
-  keymap("n", "<leader>3", [[<cmd>lua require('harpoon.ui').nav_file(3)<CR>]], opts)
-  keymap("n", "<leader>4", [[<cmd>lua require('harpoon.ui').nav_file(4)<CR>]], opts)
-  keymap("n", "<leader>5", [[<cmd>lua require('harpoon.ui').nav_file(5)<CR>]], opts)
-  vim.api.nvim_create_autocmd({ "filetype" }, {
-    pattern = "harpoon",
-    callback = function()
-      vim.cmd [[highlight link HarpoonBorder TelescopeBorder]]
-      -- vim.cmd [[setlocal nonumber]]
-      -- vim.cmd [[highlight HarpoonWindow guibg=#313132]]
-    end,
-  })
-end
-
-function M.mark_file()
-  require("harpoon.mark").add_file()
-  vim.notify "󱡅  marked file"
-end
-
-return M
