@@ -5,13 +5,14 @@ function M.config()
   require("conform").setup {
     formatters_by_ft = {
       lua = { "stylua" },
-      javascript = { { "prettierd", "prettier" } },
-      json = { "prettier" },
-      yaml = { "prettier" },
-      markdown = { "prettier" },
-      html = { "prettier" },
-      css = { "prettier" },
-      scss = { "prettier" },
+      typescript = { { "biomeLint", "prettierd", "prettier" } },
+      javascript = { { "biomeLint", "prettierd", "prettier" } },
+      json = { { "biomeLint", "prettierd", "prettier" } },
+      yaml = { "prettierd" },
+      markdown = { "prettierd" },
+      html = { "prettierd" },
+      css = { "prettierd" },
+      scss = { "prettierd" },
     },
     format_on_save = {
       -- These options will be passed to conform.format()

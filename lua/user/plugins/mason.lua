@@ -19,6 +19,7 @@ M.servers = {
   "yamlls",
   "marksman",
   "tailwindcss",
+  "biome",
 }
 
 function M.config()
