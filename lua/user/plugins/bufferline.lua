@@ -1,7 +1,7 @@
 return {
   "akinsho/bufferline.nvim",
   config = function()
-    require("bufferline").setup({
+    require("bufferline").setup {
       options = {
         numbers = function(opts)
           return string.format("%s", opts.ordinal)
@@ -40,7 +40,7 @@ return {
           return true
         end,
       },
-    })
+    }
 
     -- Buffer picker
     vim.keymap.set("n", "<Leader>bp", "<Cmd>BufferLinePick<CR>")

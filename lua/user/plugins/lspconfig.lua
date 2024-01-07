@@ -51,7 +51,7 @@ function M.config()
     "cssls",
     "html",
     "rnix",
-    "tsserver",
+    -- "tsserver",
     "pyright",
     "bashls",
     "jsonls",
@@ -60,7 +60,7 @@ function M.config()
     "tailwindcss",
     "rust_analyzer",
     "gopls",
-    "biome",
+    -- "biome",
   }
 
   local default_diagnostic_config = {
@@ -117,17 +117,17 @@ function M.config()
       require("neodev").setup {}
     end
 
-    lspconfig.eslint.setup {
-      settings = {
-        packageManager = "yarn",
-      },
-      on_attach = function(client, bufnr)
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          buffer = bufnr,
-          command = "EslintFixAll",
-        })
-      end,
-    }
+    -- lspconfig.eslint.setup {
+    --   settings = {
+    --     packageManager = "yarn",
+    --   },
+    --   on_attach = function(client, bufnr)
+    --     vim.api.nvim_create_autocmd("BufWritePre", {
+    --       buffer = bufnr,
+    --       command = "EslintFixAll",
+    --     })
+    --   end,
+    -- }
 
     lspconfig[server].setup(opts)
   end

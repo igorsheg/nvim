@@ -5,9 +5,9 @@ function M.config()
   require("conform").setup {
     formatters_by_ft = {
       lua = { "stylua" },
-      typescript = { { "biomeLint", "prettierd", "prettier" } },
-      javascript = { { "biomeLint", "prettierd", "prettier" } },
-      json = { { "biomeLint", "prettierd", "prettier" } },
+      typescript = { { "eslint", "prettierd", "prettier" } },
+      javascript = { { "eslint", "prettierd", "prettier" } },
+      json = { { "eslint", "prettierd", "prettier" } },
       yaml = { "prettierd" },
       markdown = { "prettierd" },
       html = { "prettierd" },
