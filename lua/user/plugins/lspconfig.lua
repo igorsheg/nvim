@@ -20,6 +20,9 @@ local function lsp_keymaps(bufnr)
 end
 
 M.on_attach = function(client, bufnr)
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.buf.inlay_hint(bufnr, true)
+  end
   lsp_keymaps(bufnr)
 end
 
@@ -42,6 +45,19 @@ function M.common_capabilities()
   return capabilities
 end
 
+function M._attach(client, _)
+  vim.opt.omnifunc = "v:lua.vim.lsp.omnifunc"
+  client.server_capabilities.semanticTokensProvider = nil
+  local orignal = vim.notify
+  local mynotify = function(msg, level, opts)
+    if msg == "No code actions available" or msg:find "overly" then
+      return
+    end
+    orignal(msg, level, opts)
+  end
+  vim.notify = mynotify
+end
+
 function M.config()
   local lspconfig = require "lspconfig"
   local icons = require "user.utils.icons"
@@ -51,7 +67,7 @@ function M.config()
     "cssls",
     "html",
     "rnix",
-    "tsserver",
+    -- "tsserver",
     "pyright",
     "bashls",
     "jsonls",
@@ -60,6 +76,8 @@ function M.config()
     "tailwindcss",
     "rust_analyzer",
     "gopls",
+    -- "eslint",
+    -- "biome",
   }
 
   local default_diagnostic_config = {
@@ -72,7 +90,6 @@ function M.config()
         { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
       },
     },
-    -- virtual_text = true,
     virtual_text = {
       spacing = 12,
       source = true,
@@ -102,15 +119,14 @@ function M.config()
 
   for _, server in pairs(servers) do
     local opts = {
-      inlayHints = true,
       on_attach = M.on_attach,
       capabilities = M.common_capabilities(),
     }
 
-    local require_ok, settings = pcall(require, "user.lspsettings." .. server)
-    if require_ok then
-      opts = vim.tbl_deep_extend("force", settings, opts)
-    end
+    -- local require_ok, settings = pcall(require, "user.lspsettings." .. server)
+    -- if require_ok then
+    --   opts = vim.tbl_deep_extend("force", settings, opts)
+    -- end
 
     if server == "lua_ls" then
       require("neodev").setup {}

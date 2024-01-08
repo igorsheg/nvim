@@ -1,25 +1,31 @@
-local M = {
+return {
   "stevearc/conform.nvim",
-}
-function M.config()
-  require("conform").setup {
-    formatters_by_ft = {
-      lua = { "stylua" },
-      typescript = { { "biomeLint", "prettierd", "prettier" } },
-      javascript = { { "biomeLint", "prettierd", "prettier" } },
-      json = { { "biomeLint", "prettierd", "prettier" } },
-      yaml = { "prettierd" },
-      markdown = { "prettierd" },
-      html = { "prettierd" },
-      css = { "prettierd" },
-      scss = { "prettierd" },
-    },
-    format_on_save = {
-      -- These options will be passed to conform.format()
-      timeout_ms = 500,
-      lsp_fallback = true,
-    },
-  }
-end
+  lazy = true,
+  event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
+  config = function()
+    local conform = require "conform"
 
-return M
+    conform.setup {
+      formatters_by_ft = {
+        javascript = { { "prettierd", "prettier" } },
+        typescript = { { "prettierd", "prettier" } },
+        javascriptreact = { { "prettierd", "prettier" } },
+        typescriptreact = { { "prettierd", "prettier" } },
+        svelte = { "prettierd" },
+        css = { "prettierd" },
+        html = { "prettierd" },
+        json = { "prettierd" },
+        yaml = { "prettierd" },
+        markdown = { "prettierd" },
+        graphql = { "prettierd" },
+        lua = { "stylua" },
+        python = { "isort", "black" },
+      },
+      format_on_save = {
+        lsp_fallback = true,
+        async = false,
+        timeout_ms = 1000,
+      },
+    }
+  end,
+}

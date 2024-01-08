@@ -1,13 +1,12 @@
 local M = {
   "neogitorg/neogit",
   event = "VeryLazy",
-  commit = "eb9d6b8f0840e4f2fa775bca7ec4a5df8b42ed6d",
 }
 
 function M.config()
-  local icons = require("user.utils.icons")
+  local icons = require "user.utils.icons"
 
-  require("neogit").setup({
+  require("neogit").setup {
     disable_signs = false,
     -- disable_hint = true,
     disable_context_highlighting = false,
@@ -100,7 +99,7 @@ function M.config()
     --     -- ["s"] = "",
     --   },
     -- },
-  })
+  }
 end
 
 return M
