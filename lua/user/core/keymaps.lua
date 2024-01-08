@@ -49,10 +49,28 @@ keymap("n", "<leader>e", [[<cmd>NvimTreeToggle<CR>]], opts)
 keymap("n", "<leader>f", [[<cmd>Telescope find_files theme=ivy no_ignore=false<CR>]], opts)
 keymap("n", "<leader>F", [[<cmd>Telescope live_grep search= theme=ivy only_sort_text=true<CR>]], opts)
 
+keymap("v", "<leader>F", function()
+  local text = vim.getVisualSelection()
+  require("telescope.builtin").live_grep { default_text = text }
+end, opts)
+
+function vim.getVisualSelection()
+  vim.cmd 'noau normal! "vy"'
+  local text = vim.fn.getreg "v"
+  vim.fn.setreg("v", {})
+
+  text = string.gsub(text, "\n", "")
+  if #text > 0 then
+    return text
+  else
+    return ""
+  end
+end
+
 -- keymap("n", "<leader>.", function()
 --   -- You can pass additional configuration to telescope to change theme, layout, etc.
 --   require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
---     winblend = 10,
+--     winblend = 10,keyma
 --     previewer = false,
 --   })
 -- end, { desc = "[/] Fuzzily search in current buffer" })

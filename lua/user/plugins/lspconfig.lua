@@ -60,7 +60,6 @@ function M.config()
     "tailwindcss",
     "rust_analyzer",
     "gopls",
-    "biome",
   }
 
   local default_diagnostic_config = {
