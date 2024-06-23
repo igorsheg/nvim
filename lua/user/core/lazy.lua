@@ -47,7 +47,7 @@ require("lazy").setup {
     require "user.plugins.grapple",
     require "user.plugins.bfdelete",
     require "user.plugins.fidget",
-    require "user.plugins.gp",
+    -- require "user.plugins.gp",
     require "user.plugins.asyncrun",
     require "user.plugins.ufo",
     require "user.plugins.zen",
