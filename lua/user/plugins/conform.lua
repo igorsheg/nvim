@@ -22,14 +22,6 @@ return {
         python = { "isort", "black" },
         nix = { "nixfmt" },
       },
-      -- formatters = {
-      --   prettierd = {
-      --     prepend_args = {
-      --       "--single-quote=true",
-      --       "--trailing-comma=all",
-      --     },
-      --   },
-      -- },
       format_on_save = {
         lsp_fallback = true,
         async = false,

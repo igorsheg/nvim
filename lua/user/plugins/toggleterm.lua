@@ -2,7 +2,20 @@ return {
   "akinsho/toggleterm.nvim",
   lazy = false,
   config = function()
-    local toggleterm = require "toggleterm"
+    local toggleterm  = require "toggleterm"
+    local Terminal    = require('toggleterm.terminal').Terminal
+    local scratchTerm = Terminal:new { display_name = "scratchTerm", hidden = true, direction = "vertical" }
+
+    local function toggleScratchTerm()
+      scratchTerm:toggle(80)
+    end
+
+    vim.keymap.set("n", "<C-\\>", toggleScratchTerm)
+    vim.keymap.set("t", "<C-\\>", toggleScratchTerm)
+    vim.keymap.set("v", "<C-\\>", toggleScratchTerm)
+
+    vim.keymap.set("n", "<C-l>", scratchTerm.clear)
+    vim.keymap.set("t", "<C-l>", scratchTerm.clear)
 
     toggleterm.setup {
       auto_scroll = true,

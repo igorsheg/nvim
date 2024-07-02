@@ -20,6 +20,7 @@ function M.config()
       "tsx",
       "embedded_template",
       "scss",
+      "go"
     },
     highlight = { enable = true },
     indent = { enable = true },

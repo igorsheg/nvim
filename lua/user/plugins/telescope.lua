@@ -6,7 +6,6 @@ local M = {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
     "nvim-telescope/telescope-live-grep-args.nvim",
-    -- { "altermo/telescope-nucleo-sorter.nvim", build = "cargo build --release -- -C link-arg=-undefined -C link-arg=dynamic_lookup" },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
 }
@@ -141,7 +140,6 @@ function M.config()
   telescope.load_extension "fzf"
   telescope.load_extension "ui-select"
   telescope.load_extension "live_grep_args"
-  -- telescope.load_extension "nucleo"
 end
 
 return M

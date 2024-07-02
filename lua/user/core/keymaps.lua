@@ -32,8 +32,8 @@ vim.cmd [[
 keymap("n", "-", "<cmd>Neotree position=current<CR>")
 keymap("n", "<space>", "<nop>")
 keymap("n", "<leader>'", "<C-^>", { desc = "Switch to last buffer" })
-keymap("n", "H", "^", opts)
-keymap("n", "L", "$", opts)
+-- keymap("n", "H", "^", opts)
+-- keymap("n", "L", "$", opts)
 keymap("n", "<leader> ", [[<Nop>]], opts)
 keymap("n", "<leader>w", [[<cmd>w!<CR>]], opts)
 keymap("n", "<leader>q", [[<cmd>q!<CR>]], opts)
@@ -68,11 +68,9 @@ keymap("v", "J", [[:move '>+1<CR>gv=gv]], opts)
 keymap("v", "K", [[:move '<-2<CR>gv=gv]], opts)
 keymap("v", ">", ">gv^")
 keymap("v", "<", "<gv^")
-keymap("v", "<leader>/", [[<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>]], opts)
-keymap("v", "<leader><", [[<gv]], opts)
-keymap("v", "<leader>>", [[>gv]], opts)
-keymap("v", "<leader>p", [['"_dP']], opts)
-keymap("v", "<leader>/", "<Plug>(comment_toggle_linewise_visual)", opts) -- Duplicate removed
+-- keymap("v", "<leader>/", [[<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>]], opts)
+-- keymap("v", "<leader>p", [['"_dP']], opts)
+keymap("v", "<leader>/", "<Plug>(comment_toggle_linewise_visual)", opts)
 
 -- Insert Mode Mappings
 keymap("i", "C-h", [[<C-o>h]], opts)
@@ -98,6 +96,7 @@ keymap("i", ";", ";<c-g>u")
 keymap("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", opts)
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 keymap("n", "<Esc><Esc>", [[:noh<CR>]], opts)
+
 
 -- Movement with enhanced search and undo points in Insert mode
 keymap("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next search result" })

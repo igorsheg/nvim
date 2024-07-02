@@ -19,6 +19,8 @@ return {
   init = function()
     local map = require("user.utils").map
     map("n", "<leader>gD", "<cmd>DiffviewOpen --untracked-files=no<CR>")
+    map("n", "<leader>gR", "<cmd>DiffviewOpen origin/master...HEAD<CR>")
+    map("n", "<leader>gD", "<cmd>DiffviewOpen --untracked-files=no<CR>")
     map("n", "<leader>gd", diff_file)
     map("n", "<leader>gH", "<cmd>DiffviewFileHistory %<CR>")
   end,
