@@ -88,6 +88,7 @@ function M.config()
     "gopls",
     "eslint",
     "typos_lsp",
+    "zls"
   }
 
   local default_diagnostic_config = {
