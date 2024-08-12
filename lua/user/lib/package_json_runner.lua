@@ -62,25 +62,25 @@ function M.run_script_in_repo_root()
   end
 
   require("telescope.pickers")
-    .new({}, {
-      prompt_title = "Run Script",
-      finder = require("telescope.finders").new_table { results = script_keys },
-      sorter = require("telescope.config").values.generic_sorter {},
-      attach_mappings = function(_, map)
-        map("i", "<CR>", function(bufnr)
-          local selection = require("telescope.actions.state").get_selected_entry()
-          require("telescope.actions").close(bufnr)
-          local root_dir = vim.fn.fnamemodify(package_json_path, ":h")
+      .new({}, {
+        prompt_title = "Run Script",
+        finder = require("telescope.finders").new_table { results = script_keys },
+        sorter = require("telescope.config").values.generic_sorter {},
+        attach_mappings = function(_, map)
+          map("i", "<CR>", function(bufnr)
+            local selection = require("telescope.actions.state").get_selected_entry()
+            require("telescope.actions").close(bufnr)
+            local root_dir = vim.fn.fnamemodify(package_json_path, ":h")
 
-          local cmd = "yarn run " .. selection[1]
-          local width = vim.o.columns * 0.4
-          vim.cmd(string.format("TermExec size=%s cmd='%s' dir=%s", width, cmd, root_dir))
-          vim.cmd "startinsert"
-        end)
-        return true
-      end,
-    })
-    :find()
+            local cmd = "yarn run " .. selection[1]
+            local width = vim.o.columns * 0.4
+            vim.cmd(string.format("TermExec size=%s cmd='%s' dir=%s", width, cmd, root_dir))
+            vim.cmd "startinsert"
+          end)
+          return true
+        end,
+      })
+      :find()
 end
 
 -- Register the command and key mapping

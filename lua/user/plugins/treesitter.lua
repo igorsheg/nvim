@@ -20,13 +20,13 @@ function M.config()
       "tsx",
       "embedded_template",
       "scss",
-      "go"
+      "go",
     },
     highlight = { enable = true },
     indent = { enable = true },
-    autotag = {
-      enable = true,
-    },
+    -- autotag = {
+    --   enable = true,
+    -- },
     textobjects = {
       select = {
         enable = true,

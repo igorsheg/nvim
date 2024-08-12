@@ -1,6 +1,7 @@
 return {
   "echasnovski/mini.indentscope",
   event = "VeryLazy",
+  version = false,
   opts = function(_, opts)
     opts.symbol = "┊"
     opts.options = { try_as_border = true }

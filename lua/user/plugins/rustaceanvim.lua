@@ -3,12 +3,12 @@
 ------------------
 return {
   "mrcjkb/rustaceanvim",
-  version = "^4",
+  version = "^5",
   dependencies = "neovim/nvim-lspconfig",
   ft = { "rust" },
   opts = {
     server = {
-      on_attach = function(_, bufnr)
+      on_attach = function(client, bufnr)
         local map = require("user.utils").local_map(bufnr)
         map("n", "<leader>la", "<cmd>RustLsp codeAction<CR>", "Perform code action")
 
@@ -22,6 +22,9 @@ return {
       end,
       settings = {
         ["rust-analyzer"] = {
+          files = {
+            excludeDirs = { ".direnv", "node_modules", "target", "dist" },
+          },
           cargo = {
             allFeatures = true,
             loadOutDirsFromCheck = true,

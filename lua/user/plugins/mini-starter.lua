@@ -2,6 +2,7 @@ return {
   {
     "echasnovski/mini.starter",
     event = "VimEnter",
+    version = false,
     lazy = false,
     opts = function()
       local starter = require "mini.starter"

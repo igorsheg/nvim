@@ -4,31 +4,30 @@ local M = {
     "williamboman/mason.nvim",
     "nvim-lua/plenary.nvim",
   },
-  opts = function ()
-  require("mason").setup {
-    ui = {
-      border = "rounded",
-    },
-  }
-  require("mason-lspconfig").setup {
-    ensure_installed = {
-  "lua_ls",
-  "cssls",
-  "html",
-  "tsserver",
-  "pyright",
-  "bashls",
-  "jsonls",
-  "yamlls",
-  "marksman",
-  "tailwindcss",
-  "vtsls",
-  "typos_lsp",
-  "eslint",
-  "tsserver"
+  opts = function()
+    require("mason").setup {
+      ui = {
+        border = "rounded",
       },
-    automatic_installation = true,
-  }
+    }
+    require("mason-lspconfig").setup {
+      ensure_installed = {
+        "lua_ls",
+        "cssls",
+        "html",
+        "tsserver",
+        "pyright",
+        "bashls",
+        "jsonls",
+        "yamlls",
+        "marksman",
+        "tailwindcss",
+        "vtsls",
+        "typos_lsp",
+        "tsserver"
+      },
+      automatic_installation = true,
+    }
   end
 }
 

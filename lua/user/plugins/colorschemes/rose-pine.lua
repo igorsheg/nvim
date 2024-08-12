@@ -3,7 +3,7 @@ return {
   config = function()
     local rose_pine = require "rose-pine"
     rose_pine.setup {
-      variant = "auto", -- auto, main, moon, or dawn
+      variant = "main",      -- auto, main, moon, or dawn
       dark_variant = "main", -- main, moon, or dawn
       dim_inactive_windows = false,
       extend_background_behind_borders = true,
@@ -11,13 +11,13 @@ return {
       enable = {
         terminal = true,
         legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
-        migrations = true, -- Handle deprecated options automatically
+        migrations = true,        -- Handle deprecated options automatically
       },
 
       styles = {
         bold = true,
         italic = true,
-        transparency = false,
+        transparency = true,
       },
 
       groups = {

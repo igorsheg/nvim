@@ -52,9 +52,8 @@ function M.common_capabilities()
   return capabilities
 end
 
-M.toggle_inlay_hints = function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
+M.toggle_inlay_hints = function(bufnr)
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr }, { bufnr })
 end
 
 function M._attach(client, _)
@@ -86,9 +85,12 @@ function M.config()
     "yamlls",
     "marksman",
     "gopls",
-    "eslint",
-    "typos_lsp",
-    "zls"
+    -- "eslint",
+    "pbls",
+    "zls",
+    "templ",
+    "htmx",
+    -- "tsserver"
   }
 
   local default_diagnostic_config = {
@@ -96,9 +98,9 @@ function M.config()
       active = true,
       values = {
         { name = "DiagnosticSignError", text = icons.diagnostics.Error },
-        { name = "DiagnosticSignWarn",  text = icons.diagnostics.Warning },
-        { name = "DiagnosticSignHint",  text = icons.diagnostics.Hint },
-        { name = "DiagnosticSignInfo",  text = icons.diagnostics.Information },
+        { name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
+        { name = "DiagnosticSignHint", text = icons.diagnostics.Hint },
+        { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
       },
     },
     virtual_text = {
@@ -133,7 +135,7 @@ function M.config()
     virtual_text = {
       spacing = 4,
       prefix = "", -- dot
-      severity_limit = "Warning",
+      min = "Warning",
     },
     severity_sort = true,
     update_in_insert = true,
@@ -155,6 +157,8 @@ function M.config()
     end
 
     lspconfig.vtsls.setup {
+      on_attach = M.on_attach,
+      capabilities = M.common_capabilities(),
       root_dir = util.root_pattern "package.json",
       settings = {
         vtsls = {
@@ -172,24 +176,52 @@ function M.config()
             },
           },
           inlayHints = {
-            parameterNames = { enabled = "literals" },
-            parameterTypes = { enabled = true },
-            variableTypes = { enabled = true },
-            propertyDeclarationTypes = { enabled = true },
+            parameterNames = { enabled = false },
+            parameterTypes = { enabled = false },
+            variableTypes = { enabled = false },
+            propertyDeclarationTypes = { enabled = false },
             functionLikeReturnTypes = { enabled = true },
-            enumMemberValues = { enabled = true },
+            enumMemberValues = { enabled = false },
           },
         },
       },
     }
 
-    lspconfig.eslint.setup {
-      root_dir = util.root_pattern "package.json",
-      settings = {
-        workingDirectory = { mode = "auto" },
-        packageManager = "yarn",
+    lspconfig.typos_lsp.setup {
+      init_options = {
+        diagnosticSeverity = "Warning",
       },
-      on_attach = function(_, bufnr)
+    }
+
+    lspconfig.eslint.setup {
+      settings = {
+        codeAction = {
+          disableRuleComment = {
+            enable = true,
+            location = "separateLine",
+          },
+          showDocumentation = {
+            enable = true,
+          },
+        },
+        codeActionOnSave = {
+          enable = false,
+          mode = "all",
+        },
+        format = true,
+        nodePath = "",
+        onIgnoredFiles = "off",
+        packageManager = "npm",
+        quiet = false,
+        rulesCustomizations = {},
+        run = "onType",
+        useESLintClass = false,
+        validate = "on",
+        workingDirectory = {
+          mode = "location",
+        },
+      },
+      on_attach = function(client, bufnr)
         vim.api.nvim_create_autocmd("BufWritePre", {
           buffer = bufnr,
           command = "EslintFixAll",

@@ -72,7 +72,7 @@ function M.config()
     sections = {
       lualine_a = { "mode" },
       lualine_b = { "branch" },
-      lualine_c = { diff, "navic" },
+      lualine_c = { diff, "navic", },
       lualine_x = { "diagnostics" },
       lualine_y = { "filetype" },
       lualine_z = { "progress" },

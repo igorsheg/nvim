@@ -1,58 +1,36 @@
 return {
   "lewis6991/gitsigns.nvim",
-  dependencies = "tpope/vim-repeat",
   event = "VeryLazy",
-  config = function()
-    local utils = require "user.utils"
-    local map, feedkeys_count = utils.map, utils.feedkeys_count
-    local gitsigns = require "gitsigns"
+  opts = {
+    signs = {
+      add = { text = "▎" },
+      change = { text = "▎" },
+      delete = { text = "▎" },
+      topdelete = { text = "▎" },
+      changedelete = { text = "▎" },
+      untracked = { text = "┆" },
+    },
+    on_attach = function(buffer)
+      local gs = package.loaded.gitsigns
 
-    gitsigns.setup {
-      attach_to_untracked = false,
-      trouble = false,
-      on_attach = function()
-        local function git_blame()
-          gitsigns.blame_line {
-            full = true,
-            ignore_whitespace = true,
-          }
-        end
+      local function map(mode, l, r, desc)
+        vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+      end
 
-        map({ "n", "x" }, "<leader>ghs", gitsigns.stage_hunk, "Stage git hunk")
-        map({ "n", "x" }, "<leader>ghr", gitsigns.reset_hunk, "Reset git hunk")
-
-        map("n", "<leader>ghS", gitsigns.stage_buffer, "Stage entire buffer")
-        map("n", "<leader>ghR", gitsigns.reset_buffer, "Reset entire buffer")
-        map("n", "<leader>ghu", gitsigns.undo_stage_hunk, "Undo git hunk stage")
-        map("n", "<leader>ghp", gitsigns.preview_hunk, "Preview git hunk")
-        map("n", "gb", git_blame, "Git blame line")
-
-        local function next_hunk()
-          if vim.o.diff then
-            feedkeys_count("]c", "n")
-          else
-            gitsigns.next_hunk()
-          end
-        end
-
-        local function prev_hunk()
-          if vim.o.diff then
-            feedkeys_count("[c", "n")
-          else
-            gitsigns.prev_hunk()
-          end
-        end
-
-        -- Next/previous hunk
-        map({ "n", "x" }, "]g", next_hunk, "Next git hunk")
-        map({ "n", "x" }, "[g", prev_hunk, "Previous git hunk")
-
-        -- Text objects
-        map({ "o", "x" }, "ih", gitsigns.select_hunk)
-        map({ "o", "x" }, "ah", gitsigns.select_hunk)
-      end,
-    }
-
-    vim.opt.diffopt:append { "algorithm:patience" } -- Use patience diff algorithm
-  end,
+            -- stylua: ignore start
+            map("n", "]g", gs.next_hunk, "Next Hunk")
+            map("n", "[g", gs.prev_hunk, "Prev Hunk")
+            map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+            map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+            map("n", "<leader>gS", gs.stage_buffer, "Stage Buffer")
+            map("n", "<leader>gu", gs.undo_stage_hunk, "Undo Stage Hunk")
+            map("n", "<leader>gR", gs.reset_buffer, "Reset Buffer")
+            -- map("n", "<leader>gp", gs.preview_hunk_inline, "Preview Hunk Inline")
+            map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, "Blame Line")
+            map("n", "<leader>gB", function() gs.blame() end, "Blame Buffer")
+            map("n", "<leader>gd", gs.diffthis, "Diff This")
+            map("n", "<leader>gD", function() gs.diffthis("~") end, "Diff This ~")
+            map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+    end,
+  },
 }
