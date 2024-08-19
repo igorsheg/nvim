@@ -52,7 +52,7 @@ require("lazy").setup {
     require "user.plugins.wixbo",
     require "user.plugins.mini-jump",
     require "user.plugins.ts-autotag",
-    require "user.plugins.neotest",
+    require "user.plugins.markdown-preview",
   },
   ui = {
     border = "rounded",

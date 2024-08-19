@@ -90,7 +90,8 @@ function M.config()
     "zls",
     "templ",
     "htmx",
-    -- "tsserver"
+    -- "tsserver",
+    "zk",
   }
 
   local default_diagnostic_config = {
