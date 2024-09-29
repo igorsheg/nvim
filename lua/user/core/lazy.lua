@@ -27,7 +27,7 @@ require("lazy").setup {
     require "user.plugins.cmp",
     require "user.plugins.lsp",
     require "user.plugins.mason",
-    require "user.plugins.rustaceanvim",
+    -- require "user.plugins.rustaceanvim",
     require "user.plugins.lsp-signature",
     require "user.plugins.neotree",
     require "user.plugins.telescope",
@@ -53,6 +53,7 @@ require("lazy").setup {
     require "user.plugins.mini-jump",
     require "user.plugins.ts-autotag",
     require "user.plugins.markdown-preview",
+    --   require "user.plugins.typed-key",
   },
   ui = {
     border = "rounded",

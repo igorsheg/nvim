@@ -4,14 +4,13 @@
 return {
   "mrcjkb/rustaceanvim",
   version = "^5",
+  lazy = false, -- This plugin is already lazy
   dependencies = "neovim/nvim-lspconfig",
-  ft = { "rust" },
   opts = {
     server = {
       on_attach = function(client, bufnr)
         local map = require("user.utils").local_map(bufnr)
         map("n", "<leader>la", "<cmd>RustLsp codeAction<CR>", "Perform code action")
-
         map("n", "go", "<cmd>RustLsp openCargo<CR>", "Go to cargo.toml")
         map("n", "<C-w>go", "<C-w>v<cmd>RustLsp openCargo<CR>", "Go to cargo.toml (in new window)")
         map("n", "<leader>le", "<cmd>RustLsp explainError<CR>", "Explain error")
@@ -49,6 +48,19 @@ return {
   },
   config = function(_, opts)
     vim.g.rustaceanvim = {
+      server = {
+        on_attach = function(_, bufnr)
+          local map = vim.keymap.set
+          map("n", "<leader>la", "<cmd>RustLsp codeAction<CR>")
+          map("n", "go", "<cmd>RustLsp openCargo<CR>")
+          map("n", "<C-w>go", "<C-w>v<cmd>RustLsp openCargo<CR>")
+          map("n", "<leader>le", "<cmd>RustLsp explainError<CR>")
+          map("n", "<leader>lj", "<cmd>RustLsp moveItem down<CR>")
+          map("n", "<leader>lk", "<cmd>RustLsp moveItem up<CR>")
+          map("n", "<leader>dc", "<cmd>RustLsp debuggables last<CR>")
+          map("n", "<leader>gl", "<cmd>RustLsp renderDiagnostic<CR>")
+        end,
+      },
       tools = {
         float_win_config = {
           border = "rounded",
