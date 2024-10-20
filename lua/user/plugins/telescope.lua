@@ -5,8 +5,10 @@ local M = {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
+    { "BurntSushi/ripgrep" },
+    { "natecraddock/telescope-zf-native.nvim", build = "make" },
     "nvim-telescope/telescope-live-grep-args.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
 }
 
@@ -45,13 +47,15 @@ function M.config()
       winblend = 0,
       vimgrep_arguments = {
         "rg",
-        "-L",
+        "-HnS.", -- hidden, line-number, smart-case, hidden
         "--color=never",
         "--no-heading",
-        "--with-filename",
-        "--line-number",
         "--column",
-        "--smart-case",
+        "--trim",
+        "--no-ignore",
+        "-g=!.git",
+        "-g=!node_modules",
+        "-g=!.venv",
       },
       file_ignore_patterns = {
         "%.git/",
@@ -110,14 +114,33 @@ function M.config()
       man_pages = { sections = { "2", "3" } },
       lsp_document_symbols = { path_display = { "hidden" } },
       lsp_workspace_symbols = { path_display = { "shorten" } },
+      -- find_files = {
+      --   find_command = { "fd", "-HIL", "-t=f", "--strip-cwd-prefix" },
+      --   hidden = true,
+      -- },
+      colorscheme = {
+        enable_preview = true,
+      },
     },
     extensions = {
-      fzf = {
-        fuzzy = true,
-        override_generic_sorter = true,
-        override_file_sorter = true,
-        case_mode = "smart_case",
+      ["zf-native"] = {
+        file = {
+          enable = true,
+          highlight_results = true,
+          match_filename = true,
+        },
+        generic = {
+          enable = true,
+          highlight_results = true,
+          match_filename = false,
+        },
       },
+      -- fzf = {
+      --   fuzzy = true,
+      --   override_generic_sorter = true,
+      --   override_file_sorter = true,
+      --   case_mode = "smart_case",
+      -- },
       ["ui-select"] = {
         themes.get_ivy {
           layout_config = {
@@ -137,7 +160,8 @@ function M.config()
   map("x", "<leader>F", grep_string)
   map("n", "<leader>,", builtin.resume, "Resume latest telescope session")
 
-  telescope.load_extension "fzf"
+  -- telescope.load_extension "fzf"
+  telescope.load_extension "zf-native"
   telescope.load_extension "ui-select"
   telescope.load_extension "live_grep_args"
 end

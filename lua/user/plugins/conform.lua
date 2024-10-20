@@ -12,7 +12,7 @@ return {
         -- javascriptreact = { "prettier" },
         -- typescriptreact = { "prettier" },
         svelte = { "prettierd" },
-        css = { "prettierd" },
+        css = { "prettier" },
         html = { "prettier" },
         json = { "prettierd" },
         yaml = { "prettierd" },
@@ -21,6 +21,11 @@ return {
         lua = { "stylua" },
         python = { "isort", "black" },
         nix = { "nixfmt" },
+        proto = {
+          stop_after_first = true,
+          "buf",
+          "protolint",
+        },
       },
       format_on_save = {
         lsp_fallback = true,
@@ -28,8 +33,8 @@ return {
         timeout_ms = 1000,
       },
       -- formatters = {
-      --   prettier = {
-      --     command = "/Users/igors/.local/share/nvim/mason/bin/prettier",
+      --   protolint = {
+      --     command = "protolint lint --fix",
       --   },
       -- },
     }

@@ -39,6 +39,17 @@ return {
         next = "j",
         cancel = nil,
       },
+      modes = {
+        test = {
+          mode = "lsp_references",
+          preview = {
+            type = "split",
+            relative = "win",
+            position = "right",
+            size = 0.3,
+          },
+        },
+      },
     }
   end,
 }

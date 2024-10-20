@@ -13,7 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup {
   spec = {
-    require "user.plugins.colorschemes.arctic",
+    require "user.plugins.colorschemes.obscure",
     require "user.plugins.ai",
     require "user.plugins.mini-starter",
     require "user.plugins.incline",
@@ -31,7 +31,7 @@ require("lazy").setup {
     require "user.plugins.lsp-signature",
     require "user.plugins.neotree",
     require "user.plugins.telescope",
-    require "user.plugins.indent",
+    require "user.plugins.nvim-lint",
     require "user.plugins.tmux",
     require "user.plugins.treesitter",
     require "user.plugins.auto-pairs",
@@ -53,7 +53,8 @@ require("lazy").setup {
     require "user.plugins.mini-jump",
     require "user.plugins.ts-autotag",
     require "user.plugins.markdown-preview",
-    --   require "user.plugins.typed-key",
+    require "user.plugins.hlchunk",
+    require "user.plugins.jq",
   },
   ui = {
     border = "rounded",

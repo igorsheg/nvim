@@ -15,7 +15,6 @@ local M = {
         "lua_ls",
         "cssls",
         "html",
-        "tsserver",
         "pyright",
         "bashls",
         "jsonls",
@@ -24,11 +23,10 @@ local M = {
         "tailwindcss",
         "vtsls",
         "typos_lsp",
-        "tsserver"
       },
       automatic_installation = true,
     }
-  end
+  end,
 }
 
 -- M.servers = {
