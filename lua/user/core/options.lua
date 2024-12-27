@@ -44,8 +44,8 @@ vim.opt.fillchars:append {
 
 vim.opt.spelllang:append "cjk" -- disable spellchecking for asian characters (VIM algorithm does not support it)
 vim.opt.shortmess:append "c" -- don't show redundant messages from ins-completion-menu
-vim.opt.shortmess:append "I" -- don't show the default intro message
-vim.opt.shortmess:append "W" -- don't show the default intro message
+-- vim.opt.shortmess:append "I" -- don't show the default intro message
+-- vim.opt.shortmess:append "W" -- don't show the default intro message
 
 -- Use ripgrep as grep tool
 vim.o.grepprg = "rg --vimgrep --no-heading"

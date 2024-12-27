@@ -23,12 +23,14 @@ return {
         --  to disable file types use
         --  "formatting.prettier.with({disabled_filetypes: {}})" (see null-ls docs)
         -- js/ts formatter
-        formatting.stylua, -- lua formatter
-        formatting.isort,
-        formatting.black,
+        -- formatting.stylua, -- lua formatter
+        -- formatting.isort,
+        -- formatting.black,
         -- formatting.eslint_d,
-        diagnostics.pylint,
-        diagnostics.eslint,
+        diagnostics.protolint,
+        formatting.protolint,
+        -- diagnostics.pylint,
+        -- diagnostics.eslint,
         -- diagnostics.eslint_d.with { -- js/ts linter
         --   env = { ESLINT_D_LOCAL_ESLINT_ONLY = true },
         --   condition = function(utils)

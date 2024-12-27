@@ -32,7 +32,7 @@ vim.cmd [[
 keymap("n", "-", "<cmd>Neotree position=current<CR>")
 keymap("n", "<space>", "<nop>")
 keymap("n", "<leader>'", "<C-^>", { desc = "Switch to last buffer" })
--- keymap("n", "H", "^", opts)
+keymap("n", "H", "<cmd>foldclose<CR>", opts)
 -- keymap("n", "L", "$", opts)
 keymap("n", "<leader> ", [[<Nop>]], opts)
 keymap("n", "<leader>w", [[<cmd>w!<CR>]], opts)
@@ -96,7 +96,6 @@ keymap("i", ";", ";<c-g>u")
 keymap("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", opts)
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 keymap("n", "<Esc><Esc>", [[:noh<CR>]], opts)
-
 
 -- Movement with enhanced search and undo points in Insert mode
 keymap("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next search result" })

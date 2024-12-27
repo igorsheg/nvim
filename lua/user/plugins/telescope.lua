@@ -52,7 +52,7 @@ function M.config()
         "--no-heading",
         "--column",
         "--trim",
-        "--no-ignore",
+        -- "--no-ignore",
         "-g=!.git",
         "-g=!node_modules",
         "-g=!.venv",

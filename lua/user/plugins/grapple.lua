@@ -19,8 +19,8 @@ local M = {
   },
 }
 
-function M.config()
-  require("telescope").load_extension "grapple"
-end
+-- function M.config()
+--   require("telescope").load_extension "grapple"
+-- end
 
 return M

@@ -10,7 +10,7 @@ return {
       -- typescript = { "oxlint" },
       -- javascriptreact = { "oxlint" },
       -- typescriptreact = { "oxlint" },
-      proto = { "protolint" },
+      proto = { "buf_lint" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })

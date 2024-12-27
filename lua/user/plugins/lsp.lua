@@ -52,38 +52,38 @@ function M.common_capabilities()
   return capabilities
 end
 
-local function setup_typedkey_lsp(lspconfig, configs, util)
-  if not configs.typedkey_lsp then
-    configs.typedkey_lsp = {
-      default_config = {
-        cmd = { "/users/igors/workspace/dev/personal/typed-key/target/release/typed-key" },
-        filetypes = {
-          "javascript",
-          "javascriptreact",
-          "javascript.jsx",
-          "typescript",
-          "typescriptreact",
-          "typescript.tsx",
-        },
-        single_file_support = true,
-        root_dir = util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git"),
-        settings = {},
-      },
-    }
-  end
-
-  lspconfig.typedkey_lsp.setup {
-    on_attach = M.on_attach,
-    capabilities = M.common_capabilities(),
-    settings = {
-      translationsDir = "/src/assets/locales",
-    },
-    init_options = {
-      translationsDir = "/src/assets/locales",
-      logLevel = "debug",
-    },
-  }
-end
+-- local function setup_typedkey_lsp(lspconfig, configs, util)
+--   if not configs.typedkey_lsp then
+--     configs.typedkey_lsp = {
+--       default_config = {
+--         cmd = { "/users/igors/workspace/dev/personal/typed-key/target/release/typed-key" },
+--         filetypes = {
+--           "javascript",
+--           "javascriptreact",
+--           "javascript.jsx",
+--           "typescript",
+--           "typescriptreact",
+--           "typescript.tsx",
+--         },
+--         single_file_support = true,
+--         root_dir = util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git"),
+--         settings = {},
+--       },
+--     }
+--   end
+--
+--   lspconfig.typedkey_lsp.setup {
+--     on_attach = M.on_attach,
+--     capabilities = M.common_capabilities(),
+--     settings = {
+--       translationsDir = "/src/assets/locales",
+--     },
+--     init_options = {
+--       translationsDir = "/src/assets/locales",
+--       logLevel = "debug",
+--     },
+--   }
+-- end
 
 M.toggle_inlay_hints = function(bufnr)
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr }, { bufnr })
@@ -107,9 +107,9 @@ function M.config()
   local configs = require "lspconfig.configs"
   local icons = require "user.utils.icons"
   local util = require "lspconfig.util"
-  vim.lsp.set_log_level "debug"
+  -- vim.lsp.set_log_level "debug"
 
-  setup_typedkey_lsp(lspconfig, configs, util)
+  -- setup_typedkey_lsp(lspconfig, configs, util)
 
   local servers = {
     "lua_ls",
@@ -124,7 +124,7 @@ function M.config()
     "gopls",
     "pbls",
     "zls",
-    "typedkey_lsp",
+    -- "typedkey_lsp",
     "rust_analyzer",
   }
 

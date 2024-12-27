@@ -91,5 +91,10 @@ return {
       ":Neotree toggle<CR>",
       desc = "Toggle Neotree",
     },
+    {
+      "<leader>E",
+      ":Neotree toggle position=current<CR>",
+      desc = "Toggle Neotree",
+    },
   },
 }

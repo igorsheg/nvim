@@ -21,22 +21,13 @@ return {
         lua = { "stylua" },
         python = { "isort", "black" },
         nix = { "nixfmt" },
-        proto = {
-          stop_after_first = true,
-          "buf",
-          "protolint",
-        },
+        proto = { "buf" },
       },
       format_on_save = {
         lsp_fallback = true,
         async = false,
         timeout_ms = 1000,
       },
-      -- formatters = {
-      --   protolint = {
-      --     command = "protolint lint --fix",
-      --   },
-      -- },
     }
 
     vim.api.nvim_create_user_command("Format", function(args)
