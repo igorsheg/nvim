@@ -1,146 +1,76 @@
 return {
   "saghen/blink.cmp",
-  event = "BufReadPre",
-  version = "v0.*", -- REQUIRED release tag to download pre-built binaries
-
-  ---@module "blink.cmp"
-  ---@type blink.cmp.Config
-  opts = {
-    sources = {
-      providers = {
-        { "blink.cmp.sources.lsp", name = "LSP" },
-        {
-          "blink.cmp.sources.snippets",
-          name = "Snippets",
-          score_offset = -1,
-          -- keyword_length = 1, -- not supported yet
-        },
-        {
-          "blink.cmp.sources.path",
-          name = "Path",
-          score_offset = 3,
-          opts = { get_cwd = vim.uv.cwd },
-        },
-        {
-          "blink.cmp.sources.buffer",
-          name = "Buffer",
-          keyword_length = 3,
-          fallback_for = { "Path" }, -- PENDING https://github.com/Saghen/blink.cmp/issues/122
-        },
+  -- optional: provides snippets for the snippet source
+  dependencies = {
+    "rafamadriz/friendly-snippets",
+    {
+      "L3MON4D3/LuaSnip",
+      event = "InsertEnter",
+      dependencies = {
+        "rafamadriz/friendly-snippets",
       },
-    },
-    trigger = {
-      completion = {
-        keyword_range = "full", -- full|prefix
-      },
-    },
-
-    keymap = {
-      show = "<D-c>",
-      hide = "<S-CR>",
-      accept = "<CR>",
-      select_next = { "<C-j>" },
-      select_prev = { "<C-k>" },
-      scroll_documentation_down = "<PageDown>",
-      scroll_documentation_up = "<PageUp>",
-    },
-    signature = { enabled = true },
-    accept = {
-      auto_brackets = {
-        -- Whether to auto-insert brackets for functions
-        enabled = true,
-        -- Default brackets to use for unknown languages
-        default_brackets = { "(", ")" },
-        -- Overrides the default blocked filetypes
-        override_brackets_for_filetypes = { "rust", "elixir", "heex", "lua" },
-        -- Synchronously use the kind of the item to determine if brackets should be added
-        kind_resolution = {
-          enabled = true,
-          blocked_filetypes = { "typescriptreact", "javascriptreact", "vue" },
-        },
-        -- Asynchronously use semantic token to determine if brackets should be added
-        semantic_token_resolution = {
-          enabled = true,
-          blocked_filetypes = {},
-          -- How long to wait for semantic tokens to return before assuming no brackets should be added
-          timeout_ms = 400,
-        },
-      },
-    },
-    highlight = {
-      use_nvim_cmp_as_default = true,
-    },
-    nerd_font_variant = "mono",
-    windows = {
-      documentation = {
-        min_width = 15,
-        max_width = 50,
-        max_height = 15,
-        border = vim.g.borderStyle,
-        auto_show = true,
-        auto_show_delay_ms = 200,
-      },
-      autocomplete = {
-        min_width = 10,
-        max_height = 10,
-        border = vim.g.borderStyle,
-        -- selection = "auto_insert", -- PENDING https://github.com/Saghen/blink.cmp/issues/117
-        selection = "preselect",
-        cycle = { from_top = false }, -- cycle at bottom, but not at the top
-        draw = function(ctx)
-          -- https://github.com/Saghen/blink.cmp/blob/819b978328b244fc124cfcd74661b2a7f4259f4f/lua/blink/cmp/windows/autocomplete.lua#L285-L349
-          -- differentiate LSP snippets from user snippets and emmet snippets
-          local icon, source = ctx.kind_icon, ctx.item.source
-          local client = source == "LSP" and vim.lsp.get_client_by_id(ctx.item.client_id).name
-          if source == "Snippets" or (client == "basics_ls" and ctx.kind == "Snippet") then
-            icon = "󰩫"
-          elseif source == "Buffer" or (client == "basics_ls" and ctx.kind == "Text") then
-            icon = "󰦨"
-          elseif client == "emmet_language_server" then
-            icon = "󰯸"
-          end
-
-          -- FIX highlight for Tokyonight
-          local iconHl = vim.g.colors_name:find "tokyonight" and "BlinkCmpKind" or "BlinkCmpKind" .. ctx.kind
-
-          return {
-            {
-              " " .. ctx.item.label .. " ",
-              fill = true,
-              hl_group = ctx.deprecated and "BlinkCmpLabelDeprecated" or "BlinkCmpLabel",
-              max_width = 45,
-            },
-            { icon .. ctx.icon_gap, hl_group = iconHl },
-          }
-        end,
-      },
-    },
-    kind_icons = {
-      Text = "",
-      Method = "󰊕",
-      Function = "󰊕",
-      Constructor = "",
-      Field = "󰇽",
-      Variable = "󰂡",
-      Class = "⬟",
-      Interface = "",
-      Module = "",
-      Property = "󰜢",
-      Unit = "",
-      Value = "󰎠",
-      Enum = "",
-      Keyword = "󰌋",
-      Snippet = "󰒕",
-      Color = "󰏘",
-      Reference = "",
-      File = "󰉋",
-      Folder = "󰉋",
-      EnumMember = "",
-      Constant = "󰏿",
-      Struct = "",
-      Event = "",
-      Operator = "󰆕",
-      TypeParameter = "󰅲",
     },
   },
+
+  -- use a release tag to download pre-built binaries
+  version = "*",
+  -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+  -- build = 'cargo build --release',
+  -- If you use nix, you can build from source using latest nightly rust with:
+  -- build = 'nix run .#build-plugin',
+
+  ---@module 'blink.cmp'
+  ---@type blink.cmp.Config
+  opts = {
+    -- 'default' for mappings similar to built-in completion
+    -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+    -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+    -- See the full "keymap" documentation for information on defining your own keymap.
+    keymap = {
+      preset = "default",
+      ["<C-k>"] = { "select_prev", "fallback" },
+      ["<C-j>"] = { "select_next", "fallback" },
+      ["<Tab>"] = { "select_next", "fallback" },
+      ["<S-Tab>"] = { "select_prev", "fallback" },
+      ["<CR>"] = { "accept", "fallback" },
+      ["<C-p>"] = { "show", "show_documentation", "hide_documentation" },
+    },
+
+    completion = {
+      documentation = { auto_show_delay_ms = 0, auto_show = true, window = { border = "single" } },
+
+      menu = {
+        border = "single",
+
+        -- nvim-cmp style menu
+        draw = {
+          columns = {
+            { "label", "label_description", gap = 1 },
+            { "kind_icon", "kind" },
+          },
+        },
+      },
+    },
+    signature = { enabled = true, window = { border = "single" } },
+
+    appearance = {
+      -- Sets the fallback highlight groups to nvim-cmp's highlight groups
+      -- Useful for when your theme doesn't support blink.cmp
+      -- Will be removed in a future release
+      use_nvim_cmp_as_default = true,
+      -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+      -- Adjusts spacing to ensure icons are aligned
+      nerd_font_variant = "mono",
+    },
+
+    -- Default list of enabled providers defined so that you can extend it
+    -- elsewhere in your config, without redefining it, due to `opts_extend`
+    sources = {
+      default = { "lsp", "path", "snippets", "buffer" },
+      cmdline = {},
+    },
+
+    snippets = { preset = "luasnip" },
+  },
+  opts_extend = { "sources.default" },
 }

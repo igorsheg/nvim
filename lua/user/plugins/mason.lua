@@ -29,22 +29,6 @@ local M = {
   end,
 }
 
--- M.servers = {
---   "lua_ls",
---   "cssls",
---   "html",
---   "tsserver",
---   "pyright",
---   "bashls",
---   "jsonls",
---   "yamlls",
---   "marksman",
---   "tailwindcss",
---   "vtsls",
---   "typos_lsp",
---   "eslint"
--- }
-
 function M.config()
   require("mason").setup {
     ui = {

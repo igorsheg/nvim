@@ -9,10 +9,10 @@ return {
     "<leader>gs",
     "<leader>gd",
     { "<leader>gc", "<cmd>Neogit commit<CR>", desc = "Git commit" },
-    { "<leader>gp", "<cmd>Neogit pull<CR>",   desc = "Git pull" },
-    { "<leader>gP", "<cmd>Neogit push<CR>",   desc = "Git push" },
+    { "<leader>gp", "<cmd>Neogit pull<CR>", desc = "Git pull" },
+    { "<leader>gP", "<cmd>Neogit push<CR>", desc = "Git push" },
     { "<leader>gr", "<cmd>Neogit rebase<CR>", desc = "Git rebase" },
-    { "<leader>gl", "<cmd>Neogit log<CR>",    desc = "Git log" },
+    { "<leader>gl", "<cmd>Neogit log<CR>", desc = "Git log" },
   },
   config = function()
     local map = require("user.utils").map

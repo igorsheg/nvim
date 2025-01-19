@@ -1,30 +1,41 @@
----@param require_path string
----@return table<string, fun(...): any>
-local function reqcall(require_path)
+--- Helper function to create functions that call methods of a required module.
+---@param require_path string The path to the module to require.
+---@return table<string, fun(...): any> A table where keys are method names and values are functions calling those methods.
+local function create_module_caller(require_path)
   return setmetatable({}, {
-    __index = function(_, k)
+    __index = function(_, method_name)
       return function(...)
-        return require(require_path)[k](...)
+        return require(require_path)[method_name](...)
       end
     end,
   })
 end
 
-local fzf_lua = reqcall "fzf-lua"
+local fzf_lua = create_module_caller "fzf-lua"
 
-local function title(str, icon, icon_hl)
-  return { { " " }, { (icon or ""), icon_hl or "DevIconDefault" }, { " " }, { str, "Bold" }, { " " } }
+--- Creates a title row for the fzf-lua window.
+---@param text string The title text.
+---@param icon? string An optional icon to display.
+---@param icon_highlight? string An optional highlight group for the icon.
+---@return table The title definition for fzf-lua.
+local function create_title(text, icon, icon_highlight)
+  return { { " " }, { (icon or ""), icon_highlight or "DevIconDefault" }, { " " }, { text, "Bold" }, { " " } }
 end
-local function ivy(opts, ...)
+
+--- Configuration for Ivy-style fzf-lua windows.
+---@param opts? table User-provided options.
+---@vararg any Additional arguments passed to `vim.tbl_deep_extend`.
+---@return table Merged options for fzf-lua.
+local function ivy_style(opts, ...)
   opts = opts or {}
-  opts["winopts"] = opts.winopts or {}
+  opts.winopts = opts.winopts or {}
   opts.winopts.preview = opts.winopts.preview or {}
 
   return vim.tbl_deep_extend("force", {
     prompt = "> ",
     fzf_opts = { ["--layout"] = "reverse" },
     winopts = {
-      title_pos = opts["winopts"].title and "center" or nil,
+      title_pos = opts.winopts.title and "center" or nil,
       height = 0.35,
       width = 1.00,
       row = 1,
@@ -42,24 +53,26 @@ local function ivy(opts, ...)
   }, opts, ...)
 end
 
-local function file_picker(opts_or_cwd)
-  if type(opts_or_cwd) == "table" then
-    fzf_lua.files(ivy(opts_or_cwd))
-  else
-    fzf_lua.files(ivy { cwd = opts_or_cwd })
-  end
+--- Opens the file picker using fzf-lua.
+---@param opts_or_cwd? string|table Either a directory path or a table of options.
+local function open_file_picker(opts_or_cwd)
+  local options = type(opts_or_cwd) == "table" and opts_or_cwd or { cwd = opts_or_cwd }
+  fzf_lua.files(ivy_style(options))
 end
 
-local function dropdown(opts, ...)
-  -- dd(I(opts))
+--- Configuration for dropdown-style fzf-lua windows.
+---@param opts? table User-provided options.
+---@vararg any Additional arguments passed to `vim.tbl_deep_extend`.
+---@return table Merged options for fzf-lua.
+local function dropdown_style(opts, ...)
   opts = opts or {}
-  opts["winopts"] = opts.winopts or {}
+  opts.winopts = opts.winopts or {}
 
   return vim.tbl_deep_extend("force", {
     prompt = ">",
     fzf_opts = { ["--layout"] = "reverse" },
     winopts = {
-      title_pos = opts["winopts"].title and "center" or nil,
+      title_pos = opts.winopts.title and "center" or nil,
       height = 0.70,
       width = 0.45,
       row = 0.1,
@@ -77,124 +90,111 @@ return {
     {
       "<leader>F",
       function()
-        require("fzf-lua").live_grep()
+        fzf_lua.live_grep()
       end,
+      desc = "Live Grep",
     },
     {
       "<leader>f",
-      file_picker,
+      open_file_picker,
+      desc = "File Picker",
     },
-    { "<leader>A", fzf_lua.grep_cword, desc = "grep (under cursor)" },
+    { "<leader>A", fzf_lua.grep_cword, desc = "Grep Current Word" },
     {
       "<leader>n",
       function()
-        file_picker "~/workspace/notes"
+        open_file_picker "~/workspace/notes"
       end,
-      desc = "dotfiles",
+      desc = "Open Notes",
     },
-    { "<leader>o", fzf_lua.oldfiles, desc = "oldfiles" },
+    { "<leader>o", fzf_lua.oldfiles, desc = "Open Recent Files" },
     {
       "<leader>,",
       function()
-        require("fzf-lua").resume()
+        fzf_lua.resume()
       end,
+      desc = "Resume Last Fzf Action",
     },
   },
   config = function()
     local fzf = require "fzf-lua"
+    local actions = require "fzf-lua.actions"
 
-    local delta_syntax_theme = {
-      ["dark"] = "Dracula",
-      ["light"] = "GitHub",
+    local delta_syntax_themes = {
+      dark = "Dracula",
+      light = "GitHub",
     }
+    local current_background = vim.o.background
+    local delta_theme = delta_syntax_themes[current_background]
 
-    local preview_pager = table.concat({
+    local preview_pager_command = {
       "delta",
       "--syntax-theme",
-      delta_syntax_theme[vim.o.background],
+      delta_theme,
       "--line-numbers",
       "--side-by-side",
       "--hunk-header-style='omit'",
       "--file-style='omit'",
-    }, " ")
+    }
+    local preview_pager = table.concat(preview_pager_command, " ")
 
-    local actions = require "fzf-lua.actions"
+    --- Toggles the preview window and adjusts the fzf window height.
+    ---@param selected table The currently selected item (unused).
+    ---@param opts table Fzf options.
+    local function toggle_preview_and_resize(selected, opts)
+      local win_id = vim.api.nvim_get_current_win()
+      local current_height = vim.api.nvim_win_get_height(win_id)
 
-    local function toggle_preview_and_height(selected, opts)
-      -- Get the current window
-      local win = vim.api.nvim_get_current_win()
-      local current_height = vim.api.nvim_win_get_height(win)
-
-      -- Toggle preview
       actions.toggle_preview(selected, opts)
 
-      -- Get the window again as it might have changed
-      win = vim.api.nvim_get_current_win()
+      win_id = vim.api.nvim_get_current_win() -- Window might have changed
+      local is_preview_hidden = vim.w[win_id].preview_hidden
 
-      -- Calculate new height based on current preview state
       local new_height
-      if vim.w[win].preview_hidden then
+      if is_preview_hidden then
         new_height = math.floor(vim.o.lines * 0.3)
       else
         new_height = math.floor(vim.o.lines * 0.5)
       end
 
-      -- Set the new height
-      vim.api.nvim_win_set_height(win, new_height)
+      vim.api.nvim_win_set_height(win_id, new_height)
     end
 
-    local function hl_match(t)
-      for _, h in ipairs(t) do
-        local ok, hl = pcall(vim.api.nvim_get_hl_by_name, h, true)
-        -- must have at least bg or fg, otherwise this returns
-        -- succesffully for cleared highlights (on colorscheme switch)
-        if ok and (hl.foreground or hl.background) then
-          return h
+    --- Finds the first valid highlight group from a list.
+    ---@param highlight_groups string[] List of highlight group names.
+    ---@return string? The first valid highlight group or nil.
+    local function find_valid_highlight(highlight_groups)
+      for _, group in ipairs(highlight_groups) do
+        local success, hl_data = pcall(vim.api.nvim_get_hl_by_name, group, true)
+        if success and (hl_data.foreground or hl_data.background) then
+          return group
         end
       end
+      return nil
     end
 
     require("fzf-lua").setup {
       defaults = {
         file_icons = false,
-        git_icons = false, -- show git icons?
+        git_icons = false,
       },
       fzf_opts = {
-        ["--info"] = "default", -- hidden OR inline:⏐
+        ["--info"] = "default",
         ["--reverse"] = false,
-        ["--layout"] = "reverse", -- "default" or "reverse"
+        ["--layout"] = "reverse",
         ["--scrollbar"] = "▓",
         ["--ellipsis"] = "...",
       },
       fzf_colors = {
-        -- ["fg"] = { "fg", "TelescopeNormal" },
-        -- ["fg+"] = { "fg", "TelescopeNormal" },
-        -- ["bg"] = { "bg", "TelescopeNormal" },
-        ["bg+"] = { "bg", hl_match { "CursorLine" } },
-        ["hl"] = { "fg", hl_match { "Directory" } },
+        ["bg+"] = { "bg", find_valid_highlight { "CursorLine" } },
+        ["hl"] = { "fg", find_valid_highlight { "Directory" } },
         ["hl+"] = { "fg", "CmpItemKindVariable", "italic" },
-        ["info"] = { "fg", hl_match { "FzfLuaInfo" } },
-        ["prompt"] = { "fg", hl_match { "FzfLuaPrompt" }, "italic" },
-        -- ["pointer"] = { "fg", "DiagnosticError" },
-        -- ["marker"] = { "fg", "DiagnosticError" },
-        -- ["spinner"] = { "fg", "Label" },
-        -- ["header"] = { "bg", hl_match { "TelescopeTitle" } },
-        -- ["border"] = { "fg", "TelescopeBorder" },
-        ["gutter"] = { "bg", hl_match { "TelescopePromptPrefix" } },
-        ["separator"] = { "fg", hl_match { "FzfLuaSeparator" } },
-
-        -- ["bg"] = { "bg", "TelescopeNormal" },
-        -- ["bg+"] = { "bg", "CursorLine" },
-        -- ["fg"] = { "fg", "Comment" },
-        -- ["fg+"] = { "fg", "TelescopeNormal" },
-        -- ["hl"] = { "fg", "CmpItemAbbrMatch" },
-        -- ["hl+"] = { "fg", "CmpItemAbbrMatch" },
-        -- ["gutter"] = { "bg", "TelescopeNormal" },
+        ["info"] = { "fg", find_valid_highlight { "FzfLuaInfo" } },
+        ["prompt"] = { "fg", find_valid_highlight { "FzfLuaPrompt" }, "italic" },
+        ["gutter"] = { "bg", find_valid_highlight { "TelescopePromptPrefix" } },
+        ["separator"] = { "fg", find_valid_highlight { "FzfLuaSeparator" } },
         ["header"] = { "fg", "NonText" },
-        -- ["info"] = { "fg", "NonText" },
         ["pointer"] = { "bg", "Cursor" },
-        -- ["separator"] = { "bg", "TelescopeNormal" },
-        -- ["spinner"] = { "fg", "NonText" },
       },
       winopts = {
         title_pos = nil,
@@ -229,15 +229,14 @@ return {
       previewers = {
         builtin = {
           toggle_behavior = "extend",
-          syntax_limit_l = 0, -- syntax limit (lines), 0=nolimit
-          syntax_limit_b = 1024 * 1024, -- syntax limit (bytes), 0=nolimit
-          limit_b = 1024 * 1024 * 10, -- preview limit (bytes), 0=nolimit
+          syntax_limit_l = 0,
+          syntax_limit_b = 1024 * 1024,
+          limit_b = 1024 * 1024 * 10,
           extensions = {
-            -- or, this is known to work: { "viu", "-t" }
-            ["gif"] = { "chafa", "-c", "full" },
-            ["jpg"] = { "chafa", "-c", "full" },
-            ["jpeg"] = { "chafa", "-c", "full" },
-            ["png"] = { "chafa", "-c", "full" },
+            gif = { "chafa", "-c", "full" },
+            jpg = { "chafa", "-c", "full" },
+            jpeg = { "chafa", "-c", "full" },
+            png = { "chafa", "-c", "full" },
           },
         },
       },
@@ -266,9 +265,7 @@ return {
       files = {
         multiprocess = true,
         prompt = ">",
-        winopts = { title = title "files" },
-        -- previewer = "builtin",
-        -- action = { ["ctrl-r"] = fzf.actions.arg_add },
+        winopts = { title = create_title "files" },
       },
       buffers = {
         no_header = true,
@@ -279,26 +276,20 @@ return {
           no_header = true,
         },
       },
-      grep = ivy {
+      grep = ivy_style {
         multiprocess = true,
         prompt = " ",
-        winopts = { title = title "grep" },
-        rg_opts = "--hidden --column --line-number --no-ignore-vcs --no-heading --color=always --smart-case -g '!.git'",
-        rg_glob = true, -- enable glob parsing by default to all
-        glob_flag = "--iglob", -- for case sensitive globs use '--glob'
-        glob_separator = "%s%-%-", -- query separator pattern (lua): ' --'
+        winopts = { title = create_title "grep" },
+        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!.git'",
+        rg_glob = true,
+        glob_flag = "--iglob",
+        glob_separator = "%s%-%-",
         actions = { ["ctrl-g"] = fzf.actions.grep_lgrep },
         rg_glob_fn = function(query, opts)
-          -- this enables all `rg` arguments to be passed in after the `--` glob separator
           local search_query, glob_str = query:match("(.*)" .. opts.glob_separator .. "(.*)")
           local glob_args = glob_str:gsub("^%s+", ""):gsub("-", "%-") .. " "
-
           return search_query, glob_args
         end,
-        -- previewer = "builtin",
-        -- fzf_opts = {
-        --   ["--keep-right"] = "",
-        -- },
       },
       lsp = {
         no_header = true,
@@ -338,7 +329,7 @@ return {
         },
       },
     }
-    fzf.register_ui_select(ivy {
+    fzf.register_ui_select(ivy_style {
       winopts = {
         preview = { hidden = "hidden", layout = "flex" },
       },

@@ -111,6 +111,15 @@ function M.config()
 
   -- setup_typedkey_lsp(lspconfig, configs, util)
 
+  configs.protobuf_language_server = {
+    default_config = {
+      cmd = { "protobuf-language-server" },
+      filetypes = { "proto", "cpp" },
+      root_dir = util.root_pattern ".git",
+      single_file_support = true,
+    },
+  }
+
   local servers = {
     "lua_ls",
     "cssls",
@@ -122,8 +131,9 @@ function M.config()
     "yamlls",
     "marksman",
     "gopls",
-    "pbls",
+    -- "pbls",
     "zls",
+    "protobuf_language_server",
     -- "typedkey_lsp",
     "rust_analyzer",
   }
