@@ -3,13 +3,6 @@ return {
   lazy = false,
   priority = 1000,
   keys = {
-    -- {
-    --   "<leader>e",
-    --   function()
-    --     Snacks.explorer()
-    --   end,
-    --   desc = "File Explorer",
-    -- },
     {
       "<leader>o",
       function()
@@ -89,41 +82,6 @@ return {
         Snacks.picker.lsp_implementations()
       end,
       desc = "Goto Implementation",
-    },
-    {
-      "<leader>gl",
-      function()
-        Snacks.picker.git_log()
-      end,
-      desc = "Git Log",
-    },
-    {
-      "<leader>gL",
-      function()
-        Snacks.picker.git_log_line()
-      end,
-      desc = "Git Log Line",
-    },
-    {
-      "<leader>gs",
-      function()
-        Snacks.picker.git_status()
-      end,
-      desc = "Git Status",
-    },
-    {
-      "<leader>gd",
-      function()
-        Snacks.picker.git_diff()
-      end,
-      desc = "Git Diff (Hunks)",
-    },
-    {
-      "<leader>gf",
-      function()
-        Snacks.picker.git_log_file()
-      end,
-      desc = "Git Log File",
     },
   },
   ---@class snacks.picker.Config

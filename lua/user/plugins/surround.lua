@@ -1,4 +1,4 @@
-return { -- mini.surround Surround text with any character
+return {
   "echasnovski/mini.surround",
   keys = {
     { "sa", mode = "v", desc = "Add surrounding" },

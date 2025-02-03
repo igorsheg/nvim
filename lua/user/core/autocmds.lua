@@ -1,4 +1,4 @@
-local o, opt, bo, wo, fn = vim.o, vim.opt, vim.bo, vim.wo, vim.fn
+local bo, wo, fn = vim.o, vim.opt, vim.bo
 
 -- Disabling certain `formatoptions` upon entering a buffer window
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
@@ -90,13 +90,13 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   end,
 })
 
--- Start git commits at start of line, and insert mode if message is empty
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "gitcommit",
-  callback = function()
-    wo.spell = true
-    if fn.getline(1) == "" then
-      vim.cmd "startinsert!"
-    end
-  end,
-})
+-- -- Start git commits at start of line, and insert mode if message is empty
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "gitcommit",
+--   callback = function()
+--     wo.spell = true
+--     if fn.getline(1) == "" then
+--       vim.cmd "startinsert!"
+--     end
+--   end,
+-- })

@@ -29,14 +29,12 @@ vim.cmd [[
 ]]
 
 -- General Normal Mode Mappings
--- keymap("n", "-", "<cmd>Neotree position=current<CR>")
 keymap("n", "<space>", "<nop>")
-keymap("n", "<leader>'", "<C-^>", { desc = "Switch to last buffer" })
 keymap("n", "H", "<cmd>foldclose<CR>", opts)
--- keymap("n", "L", "$", opts)
 keymap("n", "<leader> ", [[<Nop>]], opts)
 keymap("n", "<leader>w", [[<cmd>w!<CR>]], opts)
 keymap("n", "<leader>q", [[<cmd>q!<CR>]], opts)
+keymap("n", "<CR>", "viw", { noremap = true, silent = true, desc = "Select inner word" })
 
 -- Moving and Resizing Windows
 keymap("n", "<C-j>", [[<C-w>j]], opts)
@@ -68,16 +66,6 @@ keymap("v", "J", [[:move '>+1<CR>gv=gv]], opts)
 keymap("v", "K", [[:move '<-2<CR>gv=gv]], opts)
 keymap("v", ">", ">gv^")
 keymap("v", "<", "<gv^")
--- keymap("v", "<leader>/", [[<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>]], opts)
--- keymap("v", "<leader>p", [['"_dP']], opts)
-keymap("v", "<leader>/", "<Plug>(comment_toggle_linewise_visual)", opts)
-
--- Insert Mode Mappings
-keymap("i", "C-h", [[<C-o>h]], opts)
-keymap("i", "C-j", [[<C-o>j]], opts)
-keymap("i", "C-k", [[<C-o>k]], opts)
-keymap("i", "C-l", [[<C-o>l]], opts)
-keymap("i", "jk", [[<ESC>]], opts)
 
 -- Terminal Mode Mappings
 keymap("t", "<esc>", [[<C-\><C-n>]], silent)
@@ -93,8 +81,6 @@ keymap("n", "<leader>vs", utils.open_in_vscode, opts)
 keymap("i", ",", ",<c-g>u")
 keymap("i", ".", ".<c-g>u")
 keymap("i", ";", ";<c-g>u")
-keymap("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", opts)
-keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 keymap("n", "<Esc><Esc>", [[:noh<CR>]], opts)
 
 -- Movement with enhanced search and undo points in Insert mode
@@ -109,8 +95,3 @@ keymap("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search res
 keymap({ "n", "v" }, "<leader>y", [["+y]])
 keymap("n", "<leader>Y", [["+Y]])
 keymap({ "n", "v" }, "<leader>d", [["_d]])
-
--- Split and open commands
-keymap("n", "<c-w><enter>", [[:vsplit <BAR> wincmd l <BAR> Telescope find_files no_ignore=false hidden=true<CR>]], opts)
-keymap("n", "<Leader>-", ":split<CR>", opts)
-keymap("n", "<Leader><BS>", ":vsplit<CR>", opts)
