@@ -92,7 +92,7 @@ return {
       desc = "Toggle Neotree",
     },
     {
-      "<leader>E",
+      "-",
       ":Neotree toggle position=current<CR>",
       desc = "Toggle Neotree",
     },

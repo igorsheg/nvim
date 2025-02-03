@@ -29,7 +29,7 @@ vim.cmd [[
 ]]
 
 -- General Normal Mode Mappings
-keymap("n", "-", "<cmd>Neotree position=current<CR>")
+-- keymap("n", "-", "<cmd>Neotree position=current<CR>")
 keymap("n", "<space>", "<nop>")
 keymap("n", "<leader>'", "<C-^>", { desc = "Switch to last buffer" })
 keymap("n", "H", "<cmd>foldclose<CR>", opts)

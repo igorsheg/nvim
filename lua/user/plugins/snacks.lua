@@ -3,6 +3,13 @@ return {
   lazy = false,
   priority = 1000,
   keys = {
+    -- {
+    --   "<leader>e",
+    --   function()
+    --     Snacks.explorer()
+    --   end,
+    --   desc = "File Explorer",
+    -- },
     {
       "<leader>o",
       function()
@@ -26,9 +33,17 @@ return {
       desc = "Grep",
     },
     {
+      "<leader>sw",
+      function()
+        Snacks.picker.grep_word()
+      end,
+      desc = "Visual selection or word",
+      mode = { "n", "x" },
+    },
+    {
       "<leader>f",
       function()
-        Snacks.picker.files()
+        Snacks.picker.smart()
       end,
       desc = "Find Files",
     },
@@ -75,10 +90,49 @@ return {
       end,
       desc = "Goto Implementation",
     },
+    {
+      "<leader>gl",
+      function()
+        Snacks.picker.git_log()
+      end,
+      desc = "Git Log",
+    },
+    {
+      "<leader>gL",
+      function()
+        Snacks.picker.git_log_line()
+      end,
+      desc = "Git Log Line",
+    },
+    {
+      "<leader>gs",
+      function()
+        Snacks.picker.git_status()
+      end,
+      desc = "Git Status",
+    },
+    {
+      "<leader>gd",
+      function()
+        Snacks.picker.git_diff()
+      end,
+      desc = "Git Diff (Hunks)",
+    },
+    {
+      "<leader>gf",
+      function()
+        Snacks.picker.git_log_file()
+      end,
+      desc = "Git Log File",
+    },
   },
   ---@class snacks.picker.Config
   opts = {
+    explorer = {},
     picker = {
+      sources = {
+        explorer = {},
+      },
       layouts = {
         default = {
           layout = {
@@ -86,7 +140,7 @@ return {
             backdrop = false,
             row = -1,
             width = 0,
-            height = 0.3,
+            height = 0.5,
             border = "top",
             title = " {source} {live}",
             title_pos = "left",
@@ -107,6 +161,7 @@ return {
         },
       },
     },
+    git = {},
     gitbrowse = {},
     dashboard = {
       sections = {
