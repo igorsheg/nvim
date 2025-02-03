@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup {
   spec = {
     require "user.plugins.devicons",
-    require "user.plugins.colorschemes.obscure",
+    require "user.plugins.colorscheme",
     require "user.plugins.ai",
     require "user.plugins.surround",
     require "user.plugins.conform",
@@ -26,6 +26,7 @@ require("lazy").setup {
     require "user.plugins.treesitter",
     require "user.plugins.auto-pairs",
     require "user.plugins.gitsings",
+    require "user.plugins.hipatterns",
     require "user.plugins.lualine",
     require "user.plugins.schemastore",
     require "user.plugins.comment",
@@ -35,6 +36,7 @@ require("lazy").setup {
     require "user.plugins.mini-jump",
     require "user.plugins.snacks",
     require "user.plugins.neotree",
+    require "user.plugins.lsp-signature",
   },
   ui = {
     border = "rounded",

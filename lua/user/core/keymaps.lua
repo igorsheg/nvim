@@ -2,7 +2,6 @@ vim.g.mapleader = " "
 local opts = { noremap = true, silent = true }
 local silent = { silent = true }
 local keymap = vim.keymap.set
-local utils = require "user.utils"
 
 -- Command abbreviations for fixing common typos
 vim.cmd [[
@@ -77,7 +76,7 @@ keymap("t", "<C-l>", [[<Cmd>wincmd l<CR>]], silent)
 keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], silent)
 
 -- Utilities
-keymap("n", "<leader>vs", utils.open_in_vscode, opts)
+-- keymap("n", "<leader>vs", utils.open_in_vscode, opts)
 keymap("i", ",", ",<c-g>u")
 keymap("i", ".", ".<c-g>u")
 keymap("i", ";", ";<c-g>u")

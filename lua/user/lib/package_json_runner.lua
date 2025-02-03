@@ -1,5 +1,4 @@
 local M = {}
-local utils = require "user.utils"
 
 -- Helper function for notifications
 local function notify(message, level)
@@ -111,6 +110,6 @@ end
 
 -- Register the command and key mapping
 vim.api.nvim_create_user_command("RunScriptInRepoRoot", M.run_script_in_repo_root, {})
-utils.map("n", "<leader>k", ":RunScriptInRepoRoot<CR>")
+vim.keymap.set("n", "<leader>k", ":RunScriptInRepoRoot<CR>")
 
 return M

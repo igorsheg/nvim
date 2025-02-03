@@ -10,12 +10,12 @@ local M = {
 -- Keymaps
 --------------------------------------------------------------------------------
 local function lsp_keymaps()
-  local map = require("user.utils").map
-  map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-  map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-  map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>")
-  map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+  local keymap = vim.keymap.set
+  keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  keymap("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+  keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>")
+  keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>")
+  keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 end
 
 M.on_attach = function()
@@ -184,12 +184,18 @@ function M.config()
           },
         },
         inlayHints = {
-          parameterNames = { enabled = false },
-          parameterTypes = { enabled = false },
-          variableTypes = { enabled = false },
-          propertyDeclarationTypes = { enabled = false },
+          -- parameterNames = { enabled = false },
+          -- parameterTypes = { enabled = false },
+          -- variableTypes = { enabled = false },
+          -- propertyDeclarationTypes = { enabled = false },
+          -- functionLikeReturnTypes = { enabled = true },
+          -- enumMemberValues = { enabled = false },
+          parameterNames = { enabled = "literals" },
+          parameterTypes = { enabled = true },
+          variableTypes = { enabled = true },
+          propertyDeclarationTypes = { enabled = true },
           functionLikeReturnTypes = { enabled = true },
-          enumMemberValues = { enabled = false },
+          enumMemberValues = { enabled = true },
         },
       },
     },

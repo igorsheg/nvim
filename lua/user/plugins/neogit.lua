@@ -1,6 +1,3 @@
----------
--- Git --
----------
 return {
   "NeogitOrg/neogit",
   cmd = "Neogit",

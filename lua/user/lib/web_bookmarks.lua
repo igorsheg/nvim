@@ -74,8 +74,6 @@ end
 -- Set up the command and keymap
 vim.api.nvim_create_user_command("OpenBookmarks", M.open_bookmarks, {})
 
--- Create the keymap (assuming utils.map is available)
-local utils = require "user.utils"
-utils.map("n", "<leader>ab", ":OpenBookmarks<CR>")
+vim.keymap.set("n", "<leader>ab", ":OpenBookmarks<CR>")
 
 return M
