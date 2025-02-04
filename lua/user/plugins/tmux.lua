@@ -3,6 +3,10 @@ return {
   event = "VeryLazy",
   config = function()
     local tmux = require "tmux"
-    tmux.setup {}
+    tmux.setup {
+      copy_sync = {
+        enable = false,
+      },
+    }
   end,
 }

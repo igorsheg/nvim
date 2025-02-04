@@ -1,13 +1,8 @@
 return {
   "saghen/blink.cmp",
-  version = "*",
+  version = "v0.*",
   dependencies = {
     "rafamadriz/friendly-snippets",
-    {
-      "L3MON4D3/LuaSnip",
-      event = "InsertEnter",
-      dependencies = { "rafamadriz/friendly-snippets" },
-    },
   },
   opts = {
     keymap = {
@@ -20,10 +15,32 @@ return {
       ["<C-p>"] = { "show", "show_documentation", "hide_documentation" },
     },
     completion = {
+      list = {
+        selection = { preselect = true, auto_insert = true },
+      },
+      accept = {
+        create_undo_point = true,
+        auto_brackets = {
+          enabled = true,
+          kind_resolution = {
+            enabled = true,
+            blocked_filetypes = { "typescriptreact", "javascriptreact", "vue" },
+          },
+          semantic_token_resolution = {
+            enabled = true,
+            timeout_ms = 200,
+          },
+        },
+      },
       documentation = {
         auto_show_delay_ms = 0,
         auto_show = true,
         window = { border = "single" },
+      },
+      trigger = {
+        show_on_insert_on_trigger_character = true,
+        -- these are annoying
+        show_on_x_blocked_trigger_characters = { "'", '"', "(", "[", "{" },
       },
       menu = {
         border = "single",
@@ -47,7 +64,6 @@ return {
       default = { "lsp", "path", "snippets", "buffer" },
       cmdline = {},
     },
-    snippets = { preset = "luasnip" },
   },
   opts_extend = { "sources.default" },
 }
