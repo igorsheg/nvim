@@ -1,6 +1,12 @@
 return {
-  "killitar/obscure.nvim",
+  "webhooked/kanso.nvim",
   config = function()
-    vim.cmd "colorscheme obscure"
+    vim.cmd "colorscheme kanso"
+    require("kanso").setup {
+      background = {
+        dark = "zen",
+        light = "zen",
+      },
+    }
   end,
 }
