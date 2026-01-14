@@ -69,6 +69,13 @@ return {
       desc = "Goto Definition",
     },
     {
+      "gs",
+      function()
+        Snacks.picker "git_status"
+      end,
+      desc = "Goto Definition",
+    },
+    {
       "gr",
       function()
         Snacks.picker.lsp_references()

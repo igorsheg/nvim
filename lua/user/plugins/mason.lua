@@ -27,7 +27,7 @@ function M.config(_, opts)
       border = "rounded",
     },
   }
-  require("mason-lspconfig").setup(opts)
+  -- require("mason-lspconfig").setup(opts)
 end
 
 return M

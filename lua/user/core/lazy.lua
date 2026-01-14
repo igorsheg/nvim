@@ -37,6 +37,9 @@ require("lazy").setup {
     require "user.plugins.snacks",
     require "user.plugins.neotree",
     require "user.plugins.lsp-signature",
+    require "user.plugins.metals",
+    require "user.plugins.flyer",
+    require "user.plugins.vscode-diff",
   },
   ui = {
     border = "rounded",

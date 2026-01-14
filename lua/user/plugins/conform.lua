@@ -7,10 +7,10 @@ return {
 
     conform.setup {
       formatters_by_ft = {
-        -- typescript = { "prettier" },
-        -- javascript = { "prettier" },
-        -- javascriptreact = { "prettier" },
-        -- typescriptreact = { "prettier" },
+        typescript = { "prettier" },
+        javascript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescriptreact = { "prettier" },
         css = { "prettier" },
         html = { "prettier" },
         json = { "prettierd" },
@@ -20,6 +20,7 @@ return {
         lua = { "stylua" },
         nix = { "nixfmt" },
         proto = { "buf" },
+        python = { "ruff" },
       },
       format_on_save = {
         lsp_fallback = true,

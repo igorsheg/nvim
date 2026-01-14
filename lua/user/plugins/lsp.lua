@@ -12,6 +12,7 @@ local M = {
 local function lsp_keymaps()
   local keymap = vim.keymap.set
   keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
   keymap("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>")
   keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>")
   keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>")
@@ -139,6 +140,7 @@ function M.config()
     "zls",
     "protobuf_language_server",
     "rust_analyzer",
+    "tailwindcss",
   }
 
   for _, server in ipairs(servers) do
