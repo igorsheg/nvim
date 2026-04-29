@@ -1,8 +1,8 @@
-require "user.core.options"
-require "user.core.keymaps"
-require "user.core.autocmds"
-require "user.core.lazy"
-require "user.lib.package_json_runner"
-require "user.lib.web_bookmarks"
-require "user.lib.request_id"
-require("user.lib.comment_remover").setup()
+-- Fresh Neovim config
+-- Old config archived at: ~/.config/nvim-old-2026-04-29
+
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
+require("config.statusline")
+require("config.lazy")
